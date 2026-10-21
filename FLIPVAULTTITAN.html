@@ -1,0 +1,2664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="FlipVault" />
+  <title>FLIPVAULT TITAN // Mobile & Desktop Reseller OS</title>
+  <style>
+    :root {
+      --bg-base: #090d16;
+      --bg-card: #111827;
+      --bg-card-hover: #182235;
+      --bg-input: #0b101b;
+      --border: #1f2a40;
+      --text-main: #f3f4f6;
+      --text-muted: #94a3b8;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --green: #10b981;
+      --green-bg: rgba(16, 185, 129, 0.14);
+      --red: #ef4444;
+      --red-bg: rgba(239, 68, 68, 0.14);
+      --yellow: #f59e0b;
+      --yellow-bg: rgba(245, 158, 11, 0.14);
+      --purple: #8b5cf6;
+      --purple-bg: rgba(139, 92, 246, 0.16);
+      --cyan: #06b6d4;
+      --radius: 12px;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    /* MODULE 24: OLED Pitch Black & High-Contrast Daylight Themes */
+    body[data-theme="oled"] {
+      --bg-base: #000000;
+      --bg-card: #07070a;
+      --bg-card-hover: #111118;
+      --bg-input: #000000;
+      --border: #1e1e2a;
+      --text-main: #ffffff;
+      --text-muted: #8e8ea0;
+    }
+
+    body[data-theme="daylight"] {
+      --bg-base: #f1f5f9;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f8fafc;
+      --bg-input: #f8fafc;
+      --border: #cbd5e1;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --green-bg: rgba(16, 185, 129, 0.2);
+      --red-bg: rgba(239, 68, 68, 0.2);
+      --yellow-bg: rgba(245, 158, 11, 0.2);
+    }
+
+    /* MODULE 20: Stealth Mode Privacy Blur */
+    body.stealth-mode .stealth-mask {
+      filter: blur(8px);
+      user-select: none;
+      pointer-events: none;
+      transition: filter 0.2s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding-bottom: calc(85px + var(--safe-bottom));
+      transition: background 0.2s, color 0.2s;
+      overflow-x: hidden;
+    }
+
+    /* Sticky Top App Bar */
+    header {
+      background: rgba(17, 24, 39, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 60;
+    }
+    body[data-theme="oled"] header { background: rgba(5, 5, 8, 0.92); }
+    body[data-theme="daylight"] header { background: rgba(255, 255, 255, 0.92); }
+
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-logo {
+      width: 36px; height: 36px; border-radius: 9px;
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 15px; color: #fff; flex-shrink: 0;
+    }
+    .brand h1 { font-size: 15px; font-weight: 800; letter-spacing: 0.3px; line-height: 1.1; }
+    .brand span { font-size: 10.5px; color: var(--text-muted); display: block; }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      max-width: 100%;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+    .header-actions::-webkit-scrollbar { display: none; }
+
+    /* Touch-Friendly Buttons */
+    .btn {
+      background: var(--bg-input);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      white-space: nowrap;
+      min-height: 36px;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn:hover { border-color: var(--accent); }
+    .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn-success { background: var(--green); border-color: var(--green); color: #022c16; font-weight: 700; }
+    .btn-purple { background: var(--purple); border-color: var(--purple); color: #fff; }
+    .btn-warning { background: var(--yellow); border-color: var(--yellow); color: #1f1300; font-weight: 700; }
+    .btn-danger { background: var(--red-bg); border-color: rgba(239, 68, 68, 0.4); color: var(--red); }
+    .btn-sm { padding: 5px 9px; font-size: 11px; min-height: 30px; }
+    .btn-block { width: 100%; }
+
+    /* Desktop Top Tab Bar */
+    .nav-tabs {
+      max-width: 1540px;
+      margin: 10px auto 0;
+      padding: 0 16px 10px;
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      border-bottom: 1px solid var(--border);
+      scrollbar-width: none;
+    }
+    .nav-tabs::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      background: var(--bg-card);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 8px 13px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .tab-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    main { max-width: 1540px; margin: 14px auto; padding: 0 16px; }
+    .tab-section { display: none; }
+    .tab-section.active { display: block; animation: fadeIn 0.15s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(3px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+    .kpi-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .kpi-value {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 3px;
+    }
+    .kpi-sub { font-size: 11px; color: var(--text-muted); }
+
+    .text-green { color: var(--green); }
+    .text-red { color: var(--red); }
+    .text-yellow { color: var(--yellow); }
+    .text-accent { color: var(--accent); }
+    .text-purple { color: var(--purple); }
+
+    /* Panels & Collapsible Mobile Forms */
+    .panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .panel-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .panel-header.collapsible {
+      cursor: pointer;
+      user-select: none;
+      margin-bottom: 0;
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .panel-header.collapsible.open {
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .panel-title { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+    .collapse-body { display: block; }
+    .collapse-body.collapsed { display: none; }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 12px; }
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-group label { font-size: 11px; font-weight: 600; color: var(--text-muted); display: flex; justify-content: space-between; }
+
+    input, select, textarea {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 9px 11px;
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+      width: 100%;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+    input[type="range"] { padding: 0; accent-color: var(--accent); }
+    input[type="checkbox"] { width: auto; }
+
+    /* Stepper */
+    .qty-stepper { display: inline-flex; align-items: center; gap: 6px; }
+    .step-btn {
+      width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--border);
+      background: var(--bg-input); color: var(--text-main); font-weight: 800; cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+
+    /* Tables (Desktop Default) */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    th { color: var(--text-muted); font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; background: rgba(0, 0, 0, 0.2); white-space: nowrap; }
+
+    /* Badges & Pills */
+    .badge { display: inline-block; padding: 3px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; }
+    .badge-green { background: var(--green-bg); color: var(--green); }
+    .badge-yellow { background: var(--yellow-bg); color: var(--yellow); }
+    .badge-red { background: var(--red-bg); color: var(--red); }
+    .badge-blue { background: rgba(59, 130, 246, 0.15); color: var(--accent); }
+    .badge-purple { background: var(--purple-bg); color: var(--purple); }
+
+    .checkbox-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+    .checkbox-pill {
+      display: inline-flex; align-items: center; gap: 5px; padding: 6px 10px;
+      border-radius: 8px; border: 1px solid var(--border); background: var(--bg-input);
+      font-size: 12px; cursor: pointer; user-select: none;
+    }
+
+    .progress-track { width: 100%; height: 10px; background: var(--bg-input); border-radius: 999px; overflow: hidden; border: 1px solid var(--border); margin: 6px 0; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); transition: width 0.3s ease; }
+
+    .delist-banner {
+      background: rgba(239, 68, 68, 0.16); border: 1px solid var(--red); border-radius: var(--radius);
+      padding: 12px 14px; margin-bottom: 14px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; font-size: 12px;
+    }
+
+    /* Modals & Slide-Up Sheets */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.82);
+      display: none; align-items: center; justify-content: center; z-index: 100; padding: 14px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+      width: 100%; max-width: 640px; padding: 18px; max-height: 90vh; overflow-y: auto;
+    }
+
+    .thumb-img { width: 34px; height: 34px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); vertical-align: middle; margin-right: 6px; }
+
+    /* Mobile Bottom Navigation Bar */
+    .mobile-bottom-nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(17, 24, 39, 0.96);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      display: none;
+      justify-content: space-around;
+      align-items: center;
+      padding: 6px 4px calc(6px + var(--safe-bottom));
+      z-index: 70;
+    }
+    body[data-theme="oled"] .mobile-bottom-nav { background: rgba(5, 5, 8, 0.96); }
+    body[data-theme="daylight"] .mobile-bottom-nav { background: rgba(255, 255, 255, 0.96); }
+
+    .mob-nav-item {
+      background: none; border: none; color: var(--text-muted);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 3px; font-size: 10px; font-weight: 600; cursor: pointer; flex: 1; padding: 4px 0;
+    }
+    .mob-nav-item span.icon { font-size: 18px; line-height: 1; }
+    .mob-nav-item.active { color: var(--accent); }
+
+    /* Desktop Speed HUD */
+    .speed-hud {
+      position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card);
+      border-top: 1px solid var(--border); padding: 6px 20px; font-size: 11px; color: var(--text-muted);
+      display: flex; justify-content: space-between; align-items: center; z-index: 50;
+    }
+    .kbd { background: var(--bg-input); border: 1px solid var(--border); padding: 1px 5px; border-radius: 4px; font-family: monospace; color: var(--text-main); }
+
+    .module-grid-drawer {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .module-tile {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 12px;
+      text-align: left;
+      color: var(--text-main);
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .module-tile small { font-size: 10.5px; color: var(--text-muted); font-weight: 400; }
+
+    .printable-slip { background: #fff; color: #000; padding: 20px; border-radius: 4px; font-family: 'Courier New', monospace; width: 100%; max-width: 460px; margin: 0 auto; }
+
+    /* ================= MOBILE-FIRST RESPONSIVE TRANSFORMATIONS ================= */
+    @media (max-width: 768px) {
+      .speed-hud { display: none; }
+      .mobile-bottom-nav { display: flex; }
+
+      /* Prevent iOS Safari input auto-zoom */
+      input, select, textarea { font-size: 16px !important; padding: 10px 12px; }
+      .btn { min-height: 42px; font-size: 13px; }
+      .btn-sm { min-height: 34px; font-size: 12px; padding: 6px 10px; }
+
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr 1fr; }
+      .form-grid .form-group:first-child { grid-column: 1 / -1; }
+
+      .kpi-grid { grid-template-columns: 1fr 1fr; }
+      .kpi-value { font-size: 18px; }
+
+      /* Transform Tables into Native Mobile Cards */
+      table, thead, tbody, th, td, tr { display: block; width: 100%; }
+      thead tr { display: none; }
+      tbody tr {
+        background: var(--bg-input);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        margin-bottom: 10px;
+        padding: 10px 12px;
+      }
+      tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: right;
+        padding: 6px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        white-space: normal;
+        gap: 10px;
+      }
+      tbody td:last-child { border-bottom: none; padding-bottom: 2px; }
+      tbody td::before {
+        content: attr(data-label);
+        font-size: 10.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        text-align: left;
+        flex-shrink: 0;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .form-grid { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      #print-area, #print-area * { visibility: visible; }
+      #print-area { position: absolute; left: 0; top: 0; width: 100%; }
+    }
+  </style>
+</head>
+<body data-theme="default">
+
+  <header>
+    <div class="brand">
+      <div class="brand-logo">FV</div>
+      <div>
+        <h1>FLIPVAULT TITAN</h1>
+        <span>Mobile & Desktop Reseller OS</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-sm" onclick="toggleStealthMode()" id="stealth-btn">👁️ Stealth</button>
+      <select class="btn btn-sm" id="theme-select" onchange="changeTheme(this.value)" style="width:auto; font-size:12px !important; padding:4px 8px;">
+        <option value="default">🌑 Dark</option>
+        <option value="oled">🖤 OLED</option>
+        <option value="daylight">☀️ Light</option>
+      </select>
+      <button class="btn btn-sm" onclick="undoLastAction()">↩️ Undo</button>
+      <button class="btn btn-sm" onclick="openScannerModal()">📷 Scan</button>
+      <button class="btn btn-sm" onclick="loadDemoData()">✨ Demo</button>
+      <button class="btn btn-sm" onclick="exportJSON()">💾 Backup</button>
+      <label class="btn btn-sm" style="cursor:pointer;">
+        📂 Load
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)" />
+      </label>
+    </div>
+  </header>
+
+  <!-- Scrollable Top Pill Bar (Works on Desktop & Mobile) -->
+  <nav class="nav-tabs">
+    <button class="tab-btn active" id="tabbtn-dashboard" onclick="switchTab('dashboard', this)">📊 1. Home</button>
+    <button class="tab-btn" id="tabbtn-inventory" onclick="switchTab('inventory', this)">📦 2. Stock</button>
+    <button class="tab-btn" id="tabbtn-shipments" onclick="switchTab('shipments', this)">🚚 3. OTW & Preorders</button>
+    <button class="tab-btn" id="tabbtn-sales" onclick="switchTab('sales', this)">💰 4. Sell & Bundles</button>
+    <button class="tab-btn" id="tabbtn-sourcing" onclick="switchTab('sourcing', this)">🛠️ 5. Lot & Trade Lab</button>
+    <button class="tab-btn" id="tabbtn-tools" onclick="switchTab('tools', this)">💬 6. Copy & Offers</button>
+    <button class="tab-btn" id="tabbtn-mileage" onclick="switchTab('mileage', this)">🚗 7. Mileage & Meetup</button>
+    <button class="tab-btn" id="tabbtn-partners" onclick="switchTab('partners', this)">🤝 8. Splits & Vendors</button>
+    <button class="tab-btn" id="tabbtn-accounts" onclick="switchTab('accounts', this)">🏦 9. Cash & Wallets</button>
+    <button class="tab-btn" id="tabbtn-crm" onclick="switchTab('crm', this)">👥 10. CRM & Returns</button>
+    <button class="tab-btn" id="tabbtn-tax" onclick="switchTab('tax', this)">⚖️ 11. Tax & Burn</button>
+    <button class="tab-btn" id="tabbtn-system" onclick="switchTab('system', this)">📜 12. Labels & CSV</button>
+  </nav>
+
+  <main>
+    <!-- MODULE 2: Cross-List Delist Collision Banner -->
+    <div id="delist-alert-container"></div>
+
+    <!-- ================= TAB 1: COMMAND CENTER DASHBOARD ================= -->
+    <section id="tab-dashboard" class="tab-section active">
+      <div class="kpi-grid" id="dashboard-kpis"></div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">🎯 Monthly Profit Goal Pacer</span>
+            <div style="display:flex; gap:6px; align-items:center;">
+              <span style="font-size:11px; color:var(--text-muted);">Goal ($):</span>
+              <input type="number" id="goal-input" style="width:95px; padding:4px 8px;" value="1500" onchange="updateGoalTarget(this.value)" />
+            </div>
+          </div>
+          <div id="goal-pacer-body"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">♻️ Profit Reinvestment Allocator</span>
+            <span style="font-size:11px; color:var(--text-muted);">60% Restock / 25% Pocket / 15% Tax</span>
+          </div>
+          <div id="reinvest-allocator-body" class="kpi-grid" style="margin-bottom:0;"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">📈 Sales Volume & Profit Curve</span>
+        </div>
+        <div id="chart-container" style="width:100%; height:175px;"></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">📉 Deadstock Liquidation Ladder</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Item</th><th>Held</th><th>Current</th><th>Suggested Cut</th><th>Action</th></tr>
+              </thead>
+              <tbody id="markdown-ladder-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">⚡ Fast-Mover Restock Ranker</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Category</th><th>Sold</th><th>In Stock</th><th>Net Profit</th><th>Signal</th></tr>
+              </thead>
+              <tbody id="velocity-ranker-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 2: ACTIVE INVENTORY ================= -->
+    <section id="tab-inventory" class="tab-section">
+      <div class="panel">
+        <div class="panel-header collapsible open" onclick="toggleCollapse(this)">
+          <span class="panel-title">➕ Add / Edit Stock Batch (Tap to Expand/Collapse)</span>
+          <span class="badge badge-blue">Toggle Form ▾</span>
+        </div>
+        <div class="collapse-body">
+          <form id="inventory-form" onsubmit="saveInventoryItem(event)">
+            <input type="hidden" id="inv-id" />
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Item Name / Title *</label>
+                <input type="text" id="inv-name" placeholder="e.g., Essentials Hoodie Stretch Limo" required />
+              </div>
+              <div class="form-group">
+                <label>Category</label>
+                <select id="inv-category" onchange="autoCheckHazmat(this.value)">
+                  <option value="Apparel / Streetwear">Apparel / Streetwear</option>
+                  <option value="Electronics / Audio">Electronics / Audio</option>
+                  <option value="Fragrances / Cologne">Fragrances / Cologne (Class 3)</option>
+                  <option value="Footwear / Sneakers">Footwear / Sneakers</option>
+                  <option value="Accessories / Gear">Accessories / Gear</option>
+                  <option value="Consoles / Gaming">Consoles / Gaming</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Size / Condition</label>
+                <input type="text" id="inv-condition" placeholder="BNWT / Size M / Sealed" />
+              </div>
+              <div class="form-group">
+                <label>SKU / Bin</label>
+                <input type="text" id="inv-sku" placeholder="Auto if blank" />
+              </div>
+              <div class="form-group">
+                <label>Supplier / Source</label>
+                <input type="text" id="inv-source" placeholder="Vendor Name" />
+              </div>
+              <div class="form-group">
+                <label>Date Acquired *</label>
+                <input type="date" id="inv-date" required />
+              </div>
+              <div class="form-group">
+                <label>Qty Bought *</label>
+                <input type="number" id="inv-qty" min="1" step="1" value="1" required />
+              </div>
+              <div class="form-group">
+                <label>Unit Buy Cost ($) *</label>
+                <input type="number" id="inv-cost" min="0" step="0.01" placeholder="0.00" required />
+              </div>
+              <div class="form-group">
+                <label>Target List Price ($/ea) *</label>
+                <input type="number" id="inv-target" min="0" step="0.01" placeholder="0.00" required />
+              </div>
+              <div class="form-group">
+                <label>🔐 Serial / Batch Code</label>
+                <input type="text" id="inv-serial" placeholder="SN or Batch Code" />
+              </div>
+              <div class="form-group">
+                <label>⚠️ Hazmat Rule</label>
+                <select id="inv-hazmat">
+                  <option value="STANDARD">Standard Air/Ground</option>
+                  <option value="CLASS3">🔥 Class 3 Ground Only</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>📷 Photo / Receipt</label>
+                <input type="file" id="inv-photo" accept="image/*" onchange="encodeImageFile(this)" />
+                <input type="hidden" id="inv-photo-data" />
+              </div>
+            </div>
+
+            <div style="margin-bottom:14px;">
+              <label style="font-size:11px; font-weight:600; color:var(--text-muted);">🌐 Active Cross-Listed Platforms:</label>
+              <div class="checkbox-pills" id="inv-platforms-box">
+                <label class="checkbox-pill"><input type="checkbox" value="eBay" checked /> eBay</label>
+                <label class="checkbox-pill"><input type="checkbox" value="Snapchat" checked /> Snapchat</label>
+                <label class="checkbox-pill"><input type="checkbox" value="Local Cash / Meetup" /> Local</label>
+                <label class="checkbox-pill"><input type="checkbox" value="Depop" /> Depop</label>
+                <label class="checkbox-pill"><input type="checkbox" value="Mercari" /> Mercari</label>
+                <label class="checkbox-pill"><input type="checkbox" value="StockX" /> StockX</label>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:8px;">
+              <button type="submit" class="btn btn-primary btn-block" id="inv-submit-btn">➕ Save Stock Batch</button>
+              <button type="button" class="btn" id="inv-cancel-btn" style="display:none;" onclick="resetInvForm()">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">📦 Physical Stock & Price Floors</span>
+          <div style="display:flex; gap:8px; width:100%; margin-top:6px;">
+            <input type="text" id="inv-search" placeholder="🔍 Search item, SKU, serial..." oninput="renderInventory()" />
+            <select id="inv-filter-cat" onchange="renderInventory()" style="max-width:150px;">
+              <option value="ALL">All Categories</option>
+              <option value="Apparel / Streetwear">Apparel</option>
+              <option value="Electronics / Audio">Electronics</option>
+              <option value="Fragrances / Cologne">Fragrances</option>
+              <option value="Footwear / Sneakers">Footwear</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Item / Serial / SKU</th>
+                <th>Listed On</th>
+                <th>Stock Left</th>
+                <th>Unit Cost</th>
+                <th>Target Ask</th>
+                <th>Min Floor</th>
+                <th>Break-Even</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inventory-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 3: SHIPMENTS & PREORDERS ================= -->
+    <section id="tab-shipments" class="tab-section">
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header collapsible open" onclick="toggleCollapse(this)">
+            <span class="panel-title">🚚 Log Inbound Shipment</span>
+            <span class="badge badge-purple">Toggle ▾</span>
+          </div>
+          <div class="collapse-body">
+            <form id="shipment-form" onsubmit="saveShipment(event)">
+              <div class="form-grid">
+                <div class="form-group"><label>Batch / Item Name *</label><input type="text" id="ship-name" required /></div>
+                <div class="form-group">
+                  <label>Category</label>
+                  <select id="ship-category">
+                    <option value="Apparel / Streetwear">Apparel / Streetwear</option>
+                    <option value="Electronics / Audio">Electronics / Audio</option>
+                    <option value="Fragrances / Cologne">Fragrances / Cologne</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="form-group"><label>Supplier / Plug</label><input type="text" id="ship-supplier" /></div>
+                <div class="form-group"><label>Tracking #</label><input type="text" id="ship-tracking" /></div>
+                <div class="form-group"><label>ETA Date</label><input type="date" id="ship-eta" /></div>
+                <div class="form-group"><label>Qty Ordered *</label><input type="number" id="ship-qty" min="1" value="1" required /></div>
+                <div class="form-group"><label>Unit Cost ($) *</label><input type="number" id="ship-cost" min="0" step="0.01" required /></div>
+                <div class="form-group"><label>Target Price ($/ea) *</label><input type="number" id="ship-target" min="0" step="0.01" required /></div>
+              </div>
+              <button type="submit" class="btn btn-purple btn-block">🚚 Add Inbound Shipment</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header collapsible open" onclick="toggleCollapse(this)">
+            <span class="panel-title">🤝 Log Buyer Preorder / Hold</span>
+            <span class="badge badge-blue">Toggle ▾</span>
+          </div>
+          <div class="collapse-body">
+            <form id="preorder-form" onsubmit="saveCustomerPreorder(event)">
+              <div class="form-grid">
+                <div class="form-group"><label>Buyer Handle *</label><input type="text" id="po-cust" placeholder="@snap_user" required /></div>
+                <div class="form-group">
+                  <label>Platform</label>
+                  <select id="po-platform">
+                    <option value="Snapchat">Snapchat</option>
+                    <option value="Local Cash / Meetup">Local Meetup</option>
+                    <option value="Instagram DM">Instagram DM</option>
+                    <option value="eBay">eBay</option>
+                  </select>
+                </div>
+                <div class="form-group"><label>Target Item *</label><select id="po-item-select" required></select></div>
+                <div class="form-group"><label>Qty Reserved *</label><input type="number" id="po-qty" min="1" value="1" required /></div>
+                <div class="form-group"><label>Agreed Price ($/ea) *</label><input type="number" id="po-price" min="0" step="0.01" required /></div>
+                <div class="form-group"><label>Deposit Paid ($)</label><input type="number" id="po-deposit" min="0" step="0.01" value="0" /></div>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">🤝 Lock Buyer Preorder</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">📦 Inbound Shipments Queue</span></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Batch</th><th>Tracking / ETA</th><th>Units</th><th>Unit Cost</th><th>Total Tied</th><th>Est. Profit</th><th>Action</th></tr>
+            </thead>
+            <tbody id="shipments-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">📋 Customer Preorders & Balances Due</span></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Buyer</th><th>Item</th><th>Qty</th><th>Total</th><th>Deposit</th><th>Balance Due</th><th>Status</th><th>Action</th></tr>
+            </thead>
+            <tbody id="preorders-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 4: SALES & MULTI-ITEM BUNDLE POS ================= -->
+    <section id="tab-sales" class="tab-section">
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">💰 Fast Sale Terminal (Auto-Deducts Stock)</span>
+          </div>
+          <form id="sale-form" onsubmit="saveSale(event)">
+            <div class="form-group" style="margin-bottom:12px;">
+              <label style="color:var(--accent); font-weight:700;">🎯 Tap to Choose Item From Active Inventory:</label>
+              <select id="sale-inv-select" onchange="onSaleInventorySelect()"></select>
+            </div>
+            <div class="form-grid">
+              <div class="form-group"><label>Item Sold *</label><input type="text" id="sale-name" required /></div>
+              <div class="form-group"><label>Buyer Handle</label><input type="text" id="sale-cust" placeholder="@buyer" /></div>
+              <div class="form-group">
+                <label>Platform *</label>
+                <select id="sale-platform" onchange="autoCalcSaleFee()">
+                  <option value="Snapchat">Snapchat (0% Fee)</option>
+                  <option value="Local Cash / Meetup">Local Cash (0% Fee)</option>
+                  <option value="eBay">eBay (13.25% + $0.40)</option>
+                  <option value="Depop">Depop (3.3% + $0.45)</option>
+                  <option value="Mercari">Mercari (10%)</option>
+                  <option value="StockX">StockX (12%)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Deposit Wallet</label>
+                <select id="sale-account">
+                  <option value="Physical Cash">💵 Physical Cash</option>
+                  <option value="eBay Payouts">🌐 eBay Payouts</option>
+                  <option value="Cash App">🟢 Cash App</option>
+                  <option value="Apple Cash">🍎 Apple Cash</option>
+                  <option value="Venmo">🔵 Venmo</option>
+                  <option value="PayPal">🅿️ PayPal</option>
+                </select>
+              </div>
+              <div class="form-group"><label>Date Sold *</label><input type="date" id="sale-date" required /></div>
+              <div class="form-group"><label>Quantity *</label><input type="number" id="sale-qty" min="1" value="1" oninput="onSaleQtyChange()" required /></div>
+              <div class="form-group"><label>Gross Sale Price ($) *</label><input type="number" id="sale-price" min="0" step="0.01" oninput="autoCalcSaleFee()" required /></div>
+              <div class="form-group"><label>Shipping Paid by Buyer ($)</label><input type="number" id="sale-buyer-ship" min="0" step="0.01" value="0" oninput="autoCalcSaleFee()" /></div>
+              <div class="form-group"><label>Unit Buy Cost ($/ea) *</label><input type="number" id="sale-unit-cost" min="0" step="0.01" required /></div>
+              <div class="form-group"><label>Promoted Ad Rate (%)</label><input type="number" id="sale-ad-pct" min="0" max="50" step="0.5" value="0" oninput="autoCalcSaleFee()" /></div>
+              <div class="form-group"><label>Platform + Ad Fees ($)</label><input type="number" id="sale-fee" min="0" step="0.01" value="0" /></div>
+              <div class="form-group"><label>Your Shipping Label ($)</label><input type="number" id="sale-ship-cost" min="0" step="0.01" value="0" /></div>
+            </div>
+            <button type="submit" class="btn btn-success btn-block">💸 Record Sale & Deduct Stock</button>
+          </form>
+        </div>
+
+        <!-- MODULE 1: Multi-Item Bundle Cart -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">🛒 Multi-Item Bundle Cart POS</span>
+          </div>
+          <div class="form-grid">
+            <div class="form-group"><label>Select Item for Bundle</label><select id="bundle-item-select"></select></div>
+            <div class="form-group"><label>Qty</label><input type="number" id="bundle-item-qty" min="1" value="1" /></div>
+          </div>
+          <button type="button" class="btn btn-primary btn-block" onclick="addToBundleCart()" style="margin-bottom:12px;">➕ Add Item to Bundle Cart</button>
+
+          <div class="table-wrap" style="margin-bottom:12px;">
+            <table>
+              <thead><tr><th>Item</th><th>Qty</th><th>Unit Cost</th><th>Target Val</th><th>Remove</th></tr></thead>
+              <tbody id="bundle-cart-body"></tbody>
+            </table>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group"><label>Total Bundle Price ($)</label><input type="number" id="bundle-total-price" min="0" step="0.01" placeholder="180.00" /></div>
+            <div class="form-group">
+              <label>Platform</label>
+              <select id="bundle-platform">
+                <option value="Snapchat">Snapchat (0%)</option>
+                <option value="Local Cash / Meetup">Local Cash (0%)</option>
+                <option value="eBay">eBay (13.25%)</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Buyer Handle</label><input type="text" id="bundle-buyer" placeholder="@homie" /></div>
+          </div>
+          <button type="button" class="btn btn-success btn-block" onclick="checkoutBundleCart()">🚀 Checkout Bundle & Deduct All Stock</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">📈 Completed Sales Ledger</span></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Item Sold</th><th>Buyer</th><th>Channel</th><th>Qty</th><th>Gross</th><th>COGS</th><th>Fees/Ship</th><th>Net Profit</th><th>ROI</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="sales-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 5: SOURCING LAB (BULK LOT SPLITTER & TRADES) ================= -->
+    <section id="tab-sourcing" class="tab-section">
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">📦 Wholesale Box Weighted Cost Splitter</span></div>
+          <div class="form-grid">
+            <div class="form-group"><label>Total Box Cost ($)</label><input type="number" id="lot-total-cost" value="300" step="0.01" oninput="renderLotSplitter()" /></div>
+            <div class="form-group"><label>Vendor</label><input type="text" id="lot-supplier" placeholder="Wholesale Plug" /></div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group"><label>Sub-Item Name</label><input type="text" id="lot-item-name" placeholder="Alo Hoodie" /></div>
+            <div class="form-group"><label>Qty</label><input type="number" id="lot-item-qty" min="1" value="2" /></div>
+            <div class="form-group"><label>Est. Resale ($/ea)</label><input type="number" id="lot-item-resale" min="1" value="90" /></div>
+          </div>
+          <button type="button" class="btn btn-primary btn-block" onclick="addLotRow()" style="margin-bottom:12px;">➕ Add Tier to Box</button>
+          <div class="table-wrap" style="margin-bottom:12px;">
+            <table>
+              <thead><tr><th>Item</th><th>Qty</th><th>Est Resale</th><th>Weighted Buy Cost</th><th>Remove</th></tr></thead>
+              <tbody id="lot-splitter-body"></tbody>
+            </table>
+          </div>
+          <button type="button" class="btn btn-success btn-block" onclick="commitLotToInventory()">📥 Push Weighted Lot to Inventory</button>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">🔄 Trade & Cash-on-Top Swap Engine</span></div>
+          <form onsubmit="executeTradeSwap(event)">
+            <div class="form-grid">
+              <div class="form-group"><label>Outgoing Stock Item *</label><select id="trade-out-select" required></select></div>
+              <div class="form-group"><label>Outgoing Qty *</label><input type="number" id="trade-out-qty" min="1" value="1" required /></div>
+              <div class="form-group"><label>Cash Boot Received ($)</label><input type="number" id="trade-cash-in" min="0" step="0.01" value="0" /></div>
+              <div class="form-group"><label>Cash Paid by You ($)</label><input type="number" id="trade-cash-out" min="0" step="0.01" value="0" /></div>
+              <div class="form-group"><label>Incoming Item Name *</label><input type="text" id="trade-in-name" required /></div>
+              <div class="form-group"><label>Incoming Target Price ($) *</label><input type="number" id="trade-in-target" min="0" step="0.01" required /></div>
+            </div>
+            <button type="submit" class="btn btn-purple btn-block">🔄 Execute Trade & Roll Cost Basis</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 6: NEGOTIATION, COPY & POSTAGE LAB ================= -->
+    <section id="tab-tools" class="tab-section">
+      <div class="grid-3">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">🤝 Lowball & Offer Evaluator</span></div>
+          <div class="form-group" style="margin-bottom:10px;"><label>Select Item</label><select id="offer-item-select" onchange="evaluateBuyerOffer()"></select></div>
+          <div class="form-group" style="margin-bottom:10px;"><label>Buyer Offer ($)</label><input type="number" id="offer-amount" value="65" oninput="evaluateBuyerOffer()" /></div>
+          <div class="form-group" style="margin-bottom:10px;">
+            <label>Platform</label>
+            <select id="offer-platform" onchange="evaluateBuyerOffer()">
+              <option value="0">Snapchat / Local Cash (0%)</option>
+              <option value="13.25">eBay (13.25%)</option>
+              <option value="10">Mercari (10%)</option>
+              <option value="3.3">Depop (3.3%)</option>
+            </select>
+          </div>
+          <div id="offer-eval-result"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">📝 Smart Listing & DM Pitch Copy</span></div>
+          <div class="form-group" style="margin-bottom:10px;"><label>Select Item</label><select id="copy-item-select" onchange="generateSmartCopy()"></select></div>
+          <textarea id="smart-copy-output" rows="6" style="margin-bottom:10px;" readonly></textarea>
+          <button class="btn btn-primary btn-block" onclick="navigator.clipboard.writeText(document.getElementById('smart-copy-output').value); alert('Copied!');">📋 Copy Listing & DM Text</button>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">📦 Postage & Class 3 Hazmat Calc</span></div>
+          <div class="form-grid">
+            <div class="form-group"><label>Weight (oz)</label><input type="number" id="ship-calc-oz" value="14" oninput="calcPostage()" /></div>
+            <div class="form-group">
+              <label>Hazmat Type</label>
+              <select id="ship-calc-haz" onchange="calcPostage()">
+                <option value="NO">Standard Parcel</option>
+                <option value="YES">🔥 Class 3 Fragrance</option>
+              </select>
+            </div>
+          </div>
+          <div id="postage-calc-result"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 7: MEETUPS, IRS MILEAGE & SCRIPTS ================= -->
+    <section id="tab-mileage" class="tab-section">
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">🚗 2026 IRS Mileage Logger (72.5¢ / 76¢)</span></div>
+          <form onsubmit="saveMileageTrip(event)">
+            <div class="form-grid">
+              <div class="form-group"><label>Trip Purpose *</label><input type="text" id="mile-desc" placeholder="Meetup / USPS Run" required /></div>
+              <div class="form-group"><label>Date *</label><input type="date" id="mile-date" required /></div>
+              <div class="form-group"><label>Miles *</label><input type="number" id="mile-dist" min="0.1" step="0.1" placeholder="12.5" required /></div>
+              <div class="form-group">
+                <label>2026 Period</label>
+                <select id="mile-rate">
+                  <option value="0.76">Jul–Dec 2026 ($0.76/mi)</option>
+                  <option value="0.725">Jan–Jun 2026 ($0.725/mi)</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">🚗 Log Mileage Write-Off</button>
+          </form>
+          <div class="table-wrap" style="margin-top:12px;">
+            <table>
+              <thead><tr><th>Date</th><th>Purpose</th><th>Miles</th><th>Write-Off</th></tr></thead>
+              <tbody id="mileage-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">📍 Safe Meetup Text & Flake Logger</span></div>
+          <div class="form-grid">
+            <div class="form-group"><label>Buyer Handle</label><input type="text" id="meet-buyer" placeholder="@buyer" oninput="updateMeetupScript()" /></div>
+            <div class="form-group"><label>Item & Cash</label><input type="text" id="meet-item" placeholder="AirPods - $110 Cash" oninput="updateMeetupScript()" /></div>
+            <div class="form-group"><label>Meetup Spot</label><input type="text" id="meet-spot" value="Local Police Safe-Swap Lot / Plaza" oninput="updateMeetupScript()" /></div>
+            <div class="form-group"><label>Time</label><input type="text" id="meet-time" value="Today at 4:30 PM" oninput="updateMeetupScript()" /></div>
+          </div>
+          <textarea id="meetup-script-box" rows="4" style="margin-bottom:10px;" readonly></textarea>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-primary" style="flex:1;" onclick="navigator.clipboard.writeText(document.getElementById('meetup-script-box').value); alert('Copied!');">📋 Copy Text</button>
+            <button class="btn btn-danger" style="flex:1;" onclick="logBuyerNoShow()">⚠️ Log Flake</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 8: CONSIGNMENT & VENDOR SCORECARDS ================= -->
+    <section id="tab-partners" class="tab-section">
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">🤝 Consignment Partner Split Tracker</span></div>
+          <form onsubmit="saveConsignment(event)">
+            <div class="form-grid">
+              <div class="form-group"><label>Partner Handle *</label><input type="text" id="con-partner" placeholder="@homie" required /></div>
+              <div class="form-group"><label>Item Sold *</label><input type="text" id="con-item" required /></div>
+              <div class="form-group"><label>Net Profit ($) *</label><input type="number" id="con-profit" min="0" step="0.01" required /></div>
+              <div class="form-group"><label>Partner Cut (%)</label><input type="number" id="con-split" min="1" max="99" value="50" required /></div>
+            </div>
+            <button type="submit" class="btn btn-purple btn-block">➕ Log Partner Split</button>
+          </form>
+          <div class="table-wrap" style="margin-top:12px;">
+            <table>
+              <thead><tr><th>Partner</th><th>Item</th><th>Net</th><th>Payout</th><th>Status</th><th>Action</th></tr></thead>
+              <tbody id="consignment-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">🏆 Supplier & Vendor ROI Scorecard</span></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Supplier</th><th>Batches</th><th>Units</th><th>Spent</th><th>Est. Profit</th><th>ROI</th></tr></thead>
+              <tbody id="vendor-scorecard-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 9: CASH REGISTER & MULTI-ACCOUNT RECONCILER ================= -->
+    <section id="tab-accounts" class="tab-section">
+      <div class="kpi-grid" id="accounts-kpis"></div>
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">🏦 Liquid Cash & App Wallet Reconciler</span>
+        </div>
+        <div class="form-grid" id="accounts-form-grid"></div>
+        <button class="btn btn-success btn-block" onclick="saveAccountBalances()">💾 Save Wallet Balances</button>
+      </div>
+    </section>
+
+    <!-- ================= TAB 10: BUYER CRM & RETURNS/DAMAGES ================= -->
+    <section id="tab-crm" class="tab-section">
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">👥 Buyer CRM & Reputation Ledger</span></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Buyer Handle</th><th>Orders</th><th>Total Spend</th><th>Standing</th><th>Action</th></tr></thead>
+              <tbody id="crm-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">🔄 Log Return, Refund or Damaged Stock</span></div>
+          <form id="return-form" onsubmit="saveReturn(event)">
+            <div class="form-grid">
+              <div class="form-group"><label>Item Name *</label><input type="text" id="ret-name" required /></div>
+              <div class="form-group"><label>Buyer Handle</label><input type="text" id="ret-cust" /></div>
+              <div class="form-group"><label>Loss / Refund ($)</label><input type="number" id="ret-amount" min="0" step="0.01" value="0" /></div>
+              <div class="form-group">
+                <label>Restock +1 Unit?</label>
+                <select id="ret-restock">
+                  <option value="NO">No (Dead Loss)</option>
+                  <option value="YES">Yes (Return to Stock)</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-danger btn-block">⚠️ Log Incident</button>
+          </form>
+          <div class="table-wrap" style="margin-top:12px;">
+            <table>
+              <thead><tr><th>Date</th><th>Item</th><th>Loss</th><th>Restocked</th></tr></thead>
+              <tbody id="returns-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 11: 1099-K TAX, OVERHEAD & SUBSCRIPTION BURN ================= -->
+    <section id="tab-tax" class="tab-section">
+      <div class="kpi-grid" id="tax-kpis"></div>
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">⚖️ 1099-K Threshold & Overhead Logger</span></div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>1099-K Rule</label>
+              <select id="tax-threshold" onchange="renderTaxDashboard()">
+                <option value="20000" selected>$20,000 + 200 Tx (2026 Federal)</option>
+                <option value="5000">$5,000 (Transition)</option>
+                <option value="600">$600 (Strict State)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Tax Reserve: <strong id="tax-rate-label">20%</strong></label>
+              <input type="range" id="tax-rate" min="10" max="35" value="20" oninput="renderTaxDashboard()" />
+            </div>
+          </div>
+
+          <hr style="border:none; border-top:1px solid var(--border); margin:14px 0;" />
+          <form id="expense-form" onsubmit="saveExpense(event)">
+            <div class="form-grid">
+              <div class="form-group"><label>Supply / Overhead Expense *</label><input type="text" id="exp-name" placeholder="Poly Mailers / Tape" required /></div>
+              <div class="form-group"><label>Amount ($) *</label><input type="number" id="exp-amount" step="0.01" required /></div>
+              <div class="form-group"><label>Date *</label><input type="date" id="exp-date" required /></div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">➕ Log Overhead Expense</button>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">🔁 Recurring Monthly Burn Tracker</span></div>
+          <form onsubmit="saveSubscription(event)">
+            <div class="form-grid">
+              <div class="form-group"><label>Subscription / Tool *</label><input type="text" id="sub-name" placeholder="eBay Store / Vendor Group" required /></div>
+              <div class="form-group"><label>Monthly Cost ($/mo) *</label><input type="number" id="sub-cost" min="0" step="0.01" required /></div>
+            </div>
+            <button type="submit" class="btn btn-purple btn-block">➕ Add Monthly Subscription</button>
+          </form>
+          <div class="table-wrap" style="margin-top:12px;">
+            <table>
+              <thead><tr><th>Service</th><th>Monthly</th><th>Daily Burn</th><th>Action</th></tr></thead>
+              <tbody id="subscriptions-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 12: SYSTEM AUDIT, LABELS & BULK CSV ================= -->
+    <section id="tab-system" class="tab-section">
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">🏷️ Printable Bin Labels & Bulk CSV Import</span></div>
+          <button class="btn btn-primary btn-block" onclick="printSkuLabelSheet()" style="margin-bottom:14px;">🖨️ Print All Active SKU Labels</button>
+          <div class="form-group" style="margin-bottom:10px;">
+            <label>Bulk CSV Lines (Name,Category,Qty,UnitCost,TargetPrice)</label>
+            <textarea id="bulk-csv-input" rows="4" placeholder="Essentials Tee,Apparel / Streetwear,5,22,55"></textarea>
+          </div>
+          <button class="btn btn-success btn-block" onclick="importBulkCSVText()">📥 Import CSV Lines</button>
+          <hr style="border:none; border-top:1px solid var(--border); margin:14px 0;" />
+          <div style="display:flex; gap:8px;">
+            <button class="btn" style="flex:1;" onclick="exportCSV()">📄 Export CSV</button>
+            <button class="btn btn-danger" style="flex:1;" onclick="resetAllData()">🗑️ Wipe All Data</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">📜 Master Audit Log (Last 25 Events)</span>
+            <button class="btn btn-sm" onclick="undoLastAction()">↩️ Undo</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Time</th><th>Event</th></tr></thead>
+              <tbody id="audit-log-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- STICKY iOS-STYLE BOTTOM NAVIGATION BAR (Mobile) -->
+  <nav class="mobile-bottom-nav">
+    <button class="mob-nav-item active" id="mobnav-dashboard" onclick="switchTab('dashboard')">
+      <span class="icon">📊</span>
+      <span>Home</span>
+    </button>
+    <button class="mob-nav-item" id="mobnav-inventory" onclick="switchTab('inventory')">
+      <span class="icon">📦</span>
+      <span>Stock</span>
+    </button>
+    <button class="mob-nav-item" id="mobnav-sales" onclick="switchTab('sales')">
+      <span class="icon">💰</span>
+      <span>Sell</span>
+    </button>
+    <button class="mob-nav-item" id="mobnav-shipments" onclick="switchTab('shipments')">
+      <span class="icon">🚚</span>
+      <span>OTW</span>
+    </button>
+    <button class="mob-nav-item" id="mobnav-more" onclick="openMobileDrawer()">
+      <span class="icon">🧰</span>
+      <span>All 25 Tools</span>
+    </button>
+  </nav>
+
+  <!-- MOBILE ALL-MODULES APP DRAWER MODAL -->
+  <div class="modal-backdrop" id="mobile-drawer-modal" onclick="if(event.target===this)closeMobileDrawer()">
+    <div class="modal">
+      <div class="panel-header">
+        <span class="panel-title">🧰 All 12 Command Modules</span>
+        <button class="btn btn-sm" onclick="closeMobileDrawer()">✕</button>
+      </div>
+      <div class="module-grid-drawer">
+        <button class="module-tile" onclick="jumpFromDrawer('dashboard')">📊 1. Command Home<small>KPIs, Goal Pacer, Curve</small></button>
+        <button class="module-tile" onclick="jumpFromDrawer('inventory')">📦 2. Active Stock<small>Inventory, Serials, Floors</small></button>
+        <button class="module-tile" onclick="jumpFromDrawer('shipments')">🚚 3. Shipments & Holds<small>Inbound OTW & Preorders</small></button>
+        <button class="module-tile" onclick="jumpFromDrawer('sales')">💰 4. Sales & Bundles<small>1-Tap Flip & Multi-SKU POS</small></button>
+        <button class="module-tile" onclick="jumpFromDrawer('sourcing')">🛠️ 5. Lot & Trade Lab<small>Box Splitter & Cash Swaps</small></button>
+        <button class="module-tile" onclick="jumpFromDrawer('tools')">💬 6. Copy & Postage<small>Lowball Calc, DM Copy, Hazmat</small></button>
+        <button class="module-tile" onclick="jumpFromDrawer('mileage')">🚗 7. Mileage & Meetup<small>2026 IRS Log & Meetup Texts</small></button>
+        <button class="module-tile" onclick="jumpFromDrawer('partners')">🤝 8. Splits & Vendors<small>Consignment & Plug ROI</small></button>
+        <button class="module-tile" onclick="jumpFromDrawer('accounts')">🏦 9. Cash & Wallets<small>Cash, CashApp, Apple, eBay</small></button>
+        <button class="module-tile" onclick="jumpFromDrawer('crm')">👥 10. Buyers & Returns<small>VIP/Flaker CRM & Losses</small></button>
+        <button class="module-tile" onclick="jumpFromDrawer('tax')">⚖️ 11. 1099-K & Burn<small>Tax Reserve & Subscriptions</small></button>
+        <button class="module-tile" onclick="jumpFromDrawer('system')">📜 12. Labels & Audit<small>Print SKU Sheet, CSV, Undo</small></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESKTOP SPEED HUD FOOTER -->
+  <footer class="speed-hud">
+    <div>
+      <strong>⚡ SPEED HUD:</strong>
+      <span><kbd class="kbd">Alt+N</kbd> Stock</span> •
+      <span><kbd class="kbd">Alt+S</kbd> Sell</span> •
+      <span><kbd class="kbd">Alt+F</kbd> Search</span> •
+      <span><kbd class="kbd">Alt+X</kbd> Stealth</span> •
+      <span><kbd class="kbd">Alt+Z</kbd> Undo</span>
+    </div>
+    <div>FLIPVAULT_DATA_V1 // Mobile + Desktop Sync Ready</div>
+  </footer>
+
+  <!-- PRINT PREVIEW MODAL -->
+  <div class="modal-backdrop" id="slip-modal">
+    <div class="modal">
+      <div class="panel-header">
+        <span class="panel-title">🖨️ Print Preview</span>
+        <button class="btn btn-sm" onclick="closeSlip()">✕</button>
+      </div>
+      <div id="print-area">
+        <div class="printable-slip" id="slip-content"></div>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:14px;">
+        <button class="btn btn-primary" onclick="window.print()">🖨️ Print</button>
+        <button class="btn" onclick="closeSlip()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCANNER / INSTANT LOOKUP MODAL -->
+  <div class="modal-backdrop" id="scanner-modal">
+    <div class="modal">
+      <div class="panel-header">
+        <span class="panel-title">📷 Instant SKU / Serial / Item Lookup</span>
+        <button class="btn btn-sm" onclick="closeScannerModal()">✕</button>
+      </div>
+      <div class="form-group" style="margin-bottom:12px;">
+        <input type="text" id="scanner-input" placeholder="Type SKU, Serial #, or Item Name..." oninput="runScannerLookup(this.value)" />
+      </div>
+      <div id="scanner-results"></div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "FLIPVAULT_DATA_V1";
+    let undoStack = [];
+    let bundleCart = [];
+    let lotRows = [
+      { name: "Tier 1 Hoodie", qty: 3, resale: 95 },
+      { name: "Tier 2 Shorts", qty: 4, resale: 65 }
+    ];
+
+    let state = {
+      inventory: [],
+      shipments: [],
+      sales: [],
+      expenses: [],
+      preorders: [],
+      returns: [],
+      customers: {},
+      delistAlerts: [],
+      consignments: [],
+      mileage: [],
+      subscriptions: [],
+      accounts: {
+        "Physical Cash": 0,
+        "eBay Payouts": 0,
+        "Cash App": 0,
+        "Apple Cash": 0,
+        "Venmo": 0,
+        "PayPal": 0
+      },
+      auditLog: [],
+      settings: { monthlyGoal: 1500, theme: "default", stealth: false }
+    };
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const today = new Date().toISOString().split("T")[0];
+      ["inv-date", "sale-date", "exp-date", "mile-date"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = today;
+      });
+
+      // Auto-collapse entry forms on mobile screens so tables are immediately visible
+      if (window.innerWidth <= 768) {
+        document.querySelectorAll(".panel-header.collapsible").forEach(h => {
+          h.classList.remove("open");
+          if (h.nextElementSibling) h.nextElementSibling.classList.add("collapsed");
+        });
+      }
+
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          state = {
+            ...state,
+            ...parsed,
+            accounts: { ...state.accounts, ...(parsed.accounts || {}) },
+            settings: { ...state.settings, ...(parsed.settings || {}) }
+          };
+        } catch (e) { console.error(e); }
+      }
+
+      if (state.settings.theme) {
+        document.body.setAttribute("data-theme", state.settings.theme);
+        document.getElementById("theme-select").value = state.settings.theme;
+      }
+      if (state.settings.stealth) {
+        document.body.classList.add("stealth-mode");
+        document.getElementById("stealth-btn").textContent = "👁️ ON";
+      }
+      document.getElementById("goal-input").value = state.settings.monthlyGoal || 1500;
+
+      renderAll();
+      updateMeetupScript();
+      calcPostage();
+    });
+
+    function toggleCollapse(headerEl) {
+      headerEl.classList.toggle("open");
+      const body = headerEl.nextElementSibling;
+      if (body) body.classList.toggle("collapsed");
+    }
+
+    function openMobileDrawer() {
+      document.getElementById("mobile-drawer-modal").classList.add("open");
+    }
+
+    function closeMobileDrawer() {
+      document.getElementById("mobile-drawer-modal").classList.remove("open");
+    }
+
+    function jumpFromDrawer(tabId) {
+      closeMobileDrawer();
+      switchTab(tabId);
+    }
+
+    function switchTab(tabId, btnEl) {
+      document.querySelectorAll(".tab-section").forEach(s => s.classList.remove("active"));
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".mob-nav-item").forEach(m => m.classList.remove("active"));
+
+      const targetSec = document.getElementById("tab-" + tabId);
+      if (targetSec) targetSec.classList.add("active");
+
+      const topBtn = btnEl || document.getElementById("tabbtn-" + tabId);
+      if (topBtn) {
+        topBtn.classList.add("active");
+        topBtn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      }
+
+      const mobBtn = document.getElementById("mobnav-" + tabId);
+      if (mobBtn) mobBtn.classList.add("active");
+      else document.getElementById("mobnav-more").classList.add("active");
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // Keyboard Shortcuts
+    window.addEventListener("keydown", (e) => {
+      if (e.altKey && e.key.toLowerCase() === "n") { e.preventDefault(); switchTab("inventory"); }
+      if (e.altKey && e.key.toLowerCase() === "s") { e.preventDefault(); switchTab("sales"); }
+      if (e.altKey && e.key.toLowerCase() === "f") { e.preventDefault(); switchTab("inventory"); document.getElementById("inv-search").focus(); }
+      if (e.altKey && e.key.toLowerCase() === "x") { e.preventDefault(); toggleStealthMode(); }
+      if (e.altKey && e.key.toLowerCase() === "z") { e.preventDefault(); undoLastAction(); }
+      if (e.key === "Escape") { closeSlip(); closeScannerModal(); closeMobileDrawer(); }
+    });
+
+    function pushUndoSnapshot(actionLabel) {
+      undoStack.push(JSON.stringify(state));
+      if (undoStack.length > 20) undoStack.shift();
+      if (actionLabel) {
+        state.auditLog = state.auditLog || [];
+        state.auditLog.unshift({
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          action: actionLabel
+        });
+        if (state.auditLog.length > 25) state.auditLog.pop();
+      }
+    }
+
+    function undoLastAction() {
+      if (undoStack.length === 0) { alert("Nothing to undo right now."); return; }
+      state = JSON.parse(undoStack.pop());
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      renderAll();
+    }
+
+    function saveState(actionLabel) {
+      if (actionLabel) pushUndoSnapshot(actionLabel);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      renderAll();
+    }
+
+    function fmtMoney(n) {
+      const val = Number(n) || 0;
+      return (val < 0 ? "-" : "") + "$" + Math.abs(val).toFixed(2);
+    }
+
+    function daysSince(dateStr) {
+      if (!dateStr) return 0;
+      return Math.max(0, Math.floor((new Date() - new Date(dateStr)) / (1000 * 60 * 60 * 24)));
+    }
+
+    function toggleStealthMode() {
+      state.settings.stealth = !state.settings.stealth;
+      document.body.classList.toggle("stealth-mode", state.settings.stealth);
+      document.getElementById("stealth-btn").textContent = state.settings.stealth ? "👁️ ON" : "👁️ Stealth";
+      saveState();
+    }
+
+    function changeTheme(theme) {
+      state.settings.theme = theme;
+      document.body.setAttribute("data-theme", theme);
+      saveState();
+    }
+
+    function updateGoalTarget(val) {
+      state.settings.monthlyGoal = parseFloat(val) || 1500;
+      saveState("Updated monthly goal");
+    }
+
+    function encodeImageFile(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const max = 110;
+          const scale = Math.min(max / img.width, max / img.height, 1);
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+          document.getElementById("inv-photo-data").value = canvas.toDataURL("image/jpeg", 0.7);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function autoCheckHazmat(cat) {
+      if (cat.includes("Fragrances")) document.getElementById("inv-hazmat").value = "CLASS3";
+    }
+
+    // ================= INVENTORY CRUD =================
+    function saveInventoryItem(e) {
+      e.preventDefault();
+      const id = document.getElementById("inv-id").value;
+      const qty = parseInt(document.getElementById("inv-qty").value, 10) || 1;
+      const platforms = Array.from(document.querySelectorAll("#inv-platforms-box input:checked")).map(cb => cb.value);
+      const skuVal = document.getElementById("inv-sku").value.trim() || ("SKU-" + Math.floor(100 + Math.random() * 900));
+
+      const payload = {
+        id: id || ("inv_" + Date.now()),
+        name: document.getElementById("inv-name").value.trim(),
+        category: document.getElementById("inv-category").value,
+        condition: document.getElementById("inv-condition").value.trim(),
+        sku: skuVal,
+        source: document.getElementById("inv-source").value.trim(),
+        dateAcquired: document.getElementById("inv-date").value,
+        initialQty: qty,
+        qtyLeft: qty,
+        unitCost: parseFloat(document.getElementById("inv-cost").value) || 0,
+        targetPrice: parseFloat(document.getElementById("inv-target").value) || 0,
+        serial: document.getElementById("inv-serial").value.trim(),
+        hazmat: document.getElementById("inv-hazmat").value,
+        photo: document.getElementById("inv-photo-data").value || "",
+        platforms: platforms
+      };
+
+      if (id) {
+        const idx = state.inventory.findIndex(x => x.id === id);
+        if (idx > -1) {
+          const sold = state.inventory[idx].initialQty - state.inventory[idx].qtyLeft;
+          payload.qtyLeft = Math.max(0, qty - sold);
+          if (!payload.photo) payload.photo = state.inventory[idx].photo;
+          state.inventory[idx] = payload;
+        }
+        resetInvForm();
+        saveState(`Updated ${payload.name}`);
+      } else {
+        state.inventory.unshift(payload);
+        resetInvForm();
+        saveState(`Added ${qty}x ${payload.name}`);
+      }
+    }
+
+    function adjustStock(invId, delta) {
+      const item = state.inventory.find(x => x.id === invId);
+      if (!item) return;
+      const next = item.qtyLeft + delta;
+      if (next < 0) return;
+      item.qtyLeft = next;
+      if (item.qtyLeft > item.initialQty) item.initialQty = item.qtyLeft;
+      saveState(`Adjusted stock for ${item.name}`);
+    }
+
+    function editInventoryItem(id) {
+      const i = state.inventory.find(x => x.id === id);
+      if (!i) return;
+      const formHeader = document.querySelector("#tab-inventory .panel-header.collapsible");
+      if (formHeader && !formHeader.classList.contains("open")) toggleCollapse(formHeader);
+
+      document.getElementById("inv-id").value = i.id;
+      document.getElementById("inv-name").value = i.name;
+      document.getElementById("inv-category").value = i.category;
+      document.getElementById("inv-condition").value = i.condition || "";
+      document.getElementById("inv-sku").value = i.sku || "";
+      document.getElementById("inv-source").value = i.source || "";
+      document.getElementById("inv-date").value = i.dateAcquired;
+      document.getElementById("inv-qty").value = i.initialQty;
+      document.getElementById("inv-cost").value = i.unitCost;
+      document.getElementById("inv-target").value = i.targetPrice;
+      document.getElementById("inv-serial").value = i.serial || "";
+      document.getElementById("inv-hazmat").value = i.hazmat || "STANDARD";
+      document.getElementById("inv-submit-btn").textContent = "💾 Update Stock Batch";
+      document.getElementById("inv-cancel-btn").style.display = "inline-flex";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function resetInvForm() {
+      document.getElementById("inventory-form").reset();
+      document.getElementById("inv-id").value = "";
+      document.getElementById("inv-photo-data").value = "";
+      document.getElementById("inv-date").value = new Date().toISOString().split("T")[0];
+      document.getElementById("inv-submit-btn").textContent = "➕ Save Stock Batch";
+      document.getElementById("inv-cancel-btn").style.display = "none";
+    }
+
+    function applyMarkdownCut(invId, newPrice) {
+      const item = state.inventory.find(x => x.id === invId);
+      if (!item) return;
+      item.targetPrice = +newPrice.toFixed(2);
+      saveState(`Markdown applied to ${item.name}`);
+    }
+
+    // ================= SALES & BUNDLE POS =================
+    function calculatePlatformFee(platform, gross, adPct = 0) {
+      const g = Number(gross) || 0;
+      if (g <= 0) return 0;
+      let baseFee = 0;
+      switch (platform) {
+        case "eBay": baseFee = g * 0.1325 + 0.40; break;
+        case "Depop": baseFee = g * 0.033 + 0.45; break;
+        case "Mercari": baseFee = g * 0.10; break;
+        case "StockX": baseFee = g * 0.12; break;
+        default: baseFee = 0;
+      }
+      const adFee = g * ((Number(adPct) || 0) / 100);
+      return +(baseFee + adFee).toFixed(2);
+    }
+
+    function onSaleInventorySelect() {
+      const id = document.getElementById("sale-inv-select").value;
+      if (!id) return;
+      const item = state.inventory.find(x => x.id === id);
+      if (!item) return;
+      document.getElementById("sale-name").value = item.name;
+      document.getElementById("sale-unit-cost").value = item.unitCost;
+      document.getElementById("sale-qty").value = 1;
+      document.getElementById("sale-qty").max = item.qtyLeft;
+      document.getElementById("sale-price").value = item.targetPrice.toFixed(2);
+      autoCalcSaleFee();
+    }
+
+    function onSaleQtyChange() {
+      const id = document.getElementById("sale-inv-select").value;
+      const qty = parseInt(document.getElementById("sale-qty").value, 10) || 1;
+      if (id) {
+        const item = state.inventory.find(x => x.id === id);
+        if (item) {
+          const validQty = Math.min(qty, item.qtyLeft);
+          document.getElementById("sale-qty").value = validQty;
+          document.getElementById("sale-price").value = (item.targetPrice * validQty).toFixed(2);
+        }
+      }
+      autoCalcSaleFee();
+    }
+
+    function autoCalcSaleFee() {
+      const plat = document.getElementById("sale-platform").value;
+      const price = parseFloat(document.getElementById("sale-price").value) || 0;
+      const ship = parseFloat(document.getElementById("sale-buyer-ship").value) || 0;
+      const adPct = parseFloat(document.getElementById("sale-ad-pct").value) || 0;
+      document.getElementById("sale-fee").value = calculatePlatformFee(plat, price + ship, adPct);
+    }
+
+    function triggerDelistCheck(item, soldPlatform) {
+      if (!item.platforms || item.platforms.length === 0) return;
+      const others = item.platforms.filter(p => p !== soldPlatform);
+      if (item.qtyLeft === 0 && others.length > 0) {
+        state.delistAlerts.unshift({
+          id: "delist_" + Date.now(),
+          itemName: item.name,
+          soldOn: soldPlatform,
+          delistFrom: others.join(", ")
+        });
+      }
+    }
+
+    function saveSale(e) {
+      e.preventDefault();
+      const invId = document.getElementById("sale-inv-select").value;
+      const qty = parseInt(document.getElementById("sale-qty").value, 10) || 1;
+      const plat = document.getElementById("sale-platform").value;
+      const acct = document.getElementById("sale-account").value;
+      const cust = document.getElementById("sale-cust").value.trim();
+      let serialUsed = "";
+
+      if (invId) {
+        const item = state.inventory.find(x => x.id === invId);
+        if (item) {
+          if (qty > item.qtyLeft) { alert(`Only ${item.qtyLeft} left in stock!`); return; }
+          item.qtyLeft -= qty;
+          serialUsed = item.serial || "";
+          triggerDelistCheck(item, plat);
+        }
+      }
+
+      const salePrice = parseFloat(document.getElementById("sale-price").value) || 0;
+      const buyerShip = parseFloat(document.getElementById("sale-buyer-ship").value) || 0;
+      const fee = parseFloat(document.getElementById("sale-fee").value) || 0;
+      const shipCost = parseFloat(document.getElementById("sale-ship-cost").value) || 0;
+      const netCashIn = (salePrice + buyerShip) - fee - shipCost;
+
+      state.sales.unshift({
+        id: "sale_" + Date.now(),
+        invId: invId || "",
+        name: document.getElementById("sale-name").value.trim(),
+        customer: cust,
+        platform: plat,
+        dateSold: document.getElementById("sale-date").value,
+        qty: qty,
+        salePrice: salePrice,
+        buyerShip: buyerShip,
+        unitCost: parseFloat(document.getElementById("sale-unit-cost").value) || 0,
+        fee: fee,
+        shipCost: shipCost,
+        serial: serialUsed
+      });
+
+      if (state.accounts[acct] !== undefined) {
+        state.accounts[acct] = +(state.accounts[acct] + netCashIn).toFixed(2);
+      }
+
+      if (cust) {
+        if (!state.customers[cust]) state.customers[cust] = { orders: 0, spend: 0, status: "🌟 VIP / Verified" };
+        state.customers[cust].orders += 1;
+        state.customers[cust].spend += salePrice;
+      }
+
+      document.getElementById("sale-form").reset();
+      document.getElementById("sale-date").value = new Date().toISOString().split("T")[0];
+      saveState(`Sold ${qty}x ${state.sales[0].name} on ${plat}`);
+    }
+
+    function addToBundleCart() {
+      const invId = document.getElementById("bundle-item-select").value;
+      const qty = parseInt(document.getElementById("bundle-item-qty").value, 10) || 1;
+      const item = state.inventory.find(x => x.id === invId);
+      if (!item || item.qtyLeft < qty) { alert("Insufficient stock for bundle!"); return; }
+      bundleCart.push({ invId: item.id, name: item.name, qty, unitCost: item.unitCost, targetPrice: item.targetPrice });
+      renderBundleCart();
+    }
+
+    function renderBundleCart() {
+      document.getElementById("bundle-cart-body").innerHTML = bundleCart.map((c, idx) => `
+        <tr>
+          <td data-label="Item"><strong>${c.name}</strong></td>
+          <td data-label="Qty">${c.qty}</td>
+          <td data-label="Unit Cost" class="stealth-mask">${fmtMoney(c.unitCost)}</td>
+          <td data-label="Target">${fmtMoney(c.targetPrice * c.qty)}</td>
+          <td data-label="Remove"><button class="btn btn-sm btn-danger" onclick="bundleCart.splice(${idx},1); renderBundleCart();">✕</button></td>
+        </tr>
+      `).join("") || `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Bundle cart empty</td></tr>`;
+    }
+
+    function checkoutBundleCart() {
+      if (bundleCart.length === 0) { alert("Add items to the bundle cart first!"); return; }
+      const totalBundlePrice = parseFloat(document.getElementById("bundle-total-price").value) || 0;
+      if (totalBundlePrice <= 0) { alert("Enter the agreed bundle sale price!"); return; }
+      const plat = document.getElementById("bundle-platform").value;
+      const buyer = document.getElementById("bundle-buyer").value.trim() || "Bundle Buyer";
+      const totalTargetVal = bundleCart.reduce((s, c) => s + (c.targetPrice * c.qty), 0) || 1;
+      const today = new Date().toISOString().split("T")[0];
+
+      bundleCart.forEach(c => {
+        const inv = state.inventory.find(x => x.id === c.invId);
+        if (inv) {
+          inv.qtyLeft = Math.max(0, inv.qtyLeft - c.qty);
+          triggerDelistCheck(inv, plat);
+        }
+        const weight = (c.targetPrice * c.qty) / totalTargetVal;
+        const allocatedPrice = +(totalBundlePrice * weight).toFixed(2);
+        const allocatedFee = calculatePlatformFee(plat, allocatedPrice, 0);
+
+        state.sales.unshift({
+          id: "sale_" + Date.now() + "_" + Math.floor(Math.random() * 999),
+          invId: c.invId,
+          name: `[BUNDLE] ${c.name}`,
+          customer: buyer,
+          platform: plat,
+          dateSold: today,
+          qty: c.qty,
+          salePrice: allocatedPrice,
+          buyerShip: 0,
+          unitCost: c.unitCost,
+          fee: allocatedFee,
+          shipCost: 0,
+          serial: inv ? inv.serial : ""
+        });
+      });
+
+      bundleCart = [];
+      document.getElementById("bundle-total-price").value = "";
+      saveState(`Bundle checkout (${fmtMoney(totalBundlePrice)})`);
+    }
+
+    // ================= LOT SPLITTER & TRADES =================
+    function addLotRow() {
+      const name = document.getElementById("lot-item-name").value.trim();
+      const qty = parseInt(document.getElementById("lot-item-qty").value, 10) || 1;
+      const resale = parseFloat(document.getElementById("lot-item-resale").value) || 10;
+      if (!name) return;
+      lotRows.push({ name, qty, resale });
+      document.getElementById("lot-item-name").value = "";
+      renderLotSplitter();
+    }
+
+    function renderLotSplitter() {
+      const totalBoxCost = parseFloat(document.getElementById("lot-total-cost").value) || 0;
+      const totalEstValue = lotRows.reduce((s, r) => s + (r.qty * r.resale), 0) || 1;
+
+      document.getElementById("lot-splitter-body").innerHTML = lotRows.map((r, idx) => {
+        const rowVal = r.qty * r.resale;
+        const unitBuyCost = (totalBoxCost * (rowVal / totalEstValue)) / r.qty;
+        return `
+          <tr>
+            <td data-label="Item"><strong>${r.name}</strong></td>
+            <td data-label="Qty">${r.qty}</td>
+            <td data-label="Est Resale">${fmtMoney(r.resale)}</td>
+            <td data-label="Weighted Cost" class="text-green stealth-mask"><strong>${fmtMoney(unitBuyCost)}/ea</strong></td>
+            <td data-label="Remove"><button class="btn btn-sm btn-danger" onclick="lotRows.splice(${idx},1); renderLotSplitter();">✕</button></td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function commitLotToInventory() {
+      if (lotRows.length === 0) return;
+      const totalBoxCost = parseFloat(document.getElementById("lot-total-cost").value) || 0;
+      const supplier = document.getElementById("lot-supplier").value.trim() || "Wholesale Lot";
+      const totalEstValue = lotRows.reduce((s, r) => s + (r.qty * r.resale), 0) || 1;
+      const today = new Date().toISOString().split("T")[0];
+
+      lotRows.forEach(r => {
+        const rowVal = r.qty * r.resale;
+        const unitBuyCost = +((totalBoxCost * (rowVal / totalEstValue)) / r.qty).toFixed(2);
+        state.inventory.unshift({
+          id: "inv_" + Date.now() + "_" + Math.floor(Math.random() * 999),
+          name: r.name,
+          category: "Apparel / Streetwear",
+          condition: "Lot Batch",
+          sku: "LOT-" + Math.floor(100 + Math.random() * 900),
+          source: supplier,
+          dateAcquired: today,
+          initialQty: r.qty,
+          qtyLeft: r.qty,
+          unitCost: unitBuyCost,
+          targetPrice: r.resale,
+          serial: "",
+          hazmat: "STANDARD",
+          platforms: ["eBay", "Snapchat"]
+        });
+      });
+      lotRows = [];
+      saveState(`Imported weighted lot (${fmtMoney(totalBoxCost)})`);
+    }
+
+    function executeTradeSwap(e) {
+      e.preventDefault();
+      const outId = document.getElementById("trade-out-select").value;
+      const outQty = parseInt(document.getElementById("trade-out-qty").value, 10) || 1;
+      const cashIn = parseFloat(document.getElementById("trade-cash-in").value) || 0;
+      const cashOut = parseFloat(document.getElementById("trade-cash-out").value) || 0;
+      const inName = document.getElementById("trade-in-name").value.trim();
+      const inTarget = parseFloat(document.getElementById("trade-in-target").value) || 0;
+
+      const outItem = state.inventory.find(x => x.id === outId);
+      if (!outItem || outItem.qtyLeft < outQty) { alert("Insufficient stock for trade!"); return; }
+
+      outItem.qtyLeft -= outQty;
+      const rolledCostBasis = Math.max(0, (outItem.unitCost * outQty) - cashIn + cashOut);
+
+      state.inventory.unshift({
+        id: "inv_" + Date.now(),
+        name: `[TRADE] ${inName}`,
+        category: outItem.category,
+        condition: "Traded",
+        sku: "TRD-" + Math.floor(100 + Math.random() * 900),
+        source: `Trade for ${outItem.name}`,
+        dateAcquired: new Date().toISOString().split("T")[0],
+        initialQty: 1,
+        qtyLeft: 1,
+        unitCost: +rolledCostBasis.toFixed(2),
+        targetPrice: inTarget,
+        serial: "",
+        hazmat: "STANDARD",
+        platforms: ["Snapchat", "eBay"]
+      });
+
+      saveState(`Traded ${outItem.name} for ${inName}`);
+    }
+
+    // ================= SHIPMENTS & PREORDERS =================
+    function saveShipment(e) {
+      e.preventDefault();
+      state.shipments.unshift({
+        id: "ship_" + Date.now(),
+        name: document.getElementById("ship-name").value.trim(),
+        category: document.getElementById("ship-category").value,
+        supplier: document.getElementById("ship-supplier").value.trim(),
+        tracking: document.getElementById("ship-tracking").value.trim(),
+        eta: document.getElementById("ship-eta").value,
+        qty: parseInt(document.getElementById("ship-qty").value, 10) || 1,
+        unitCost: parseFloat(document.getElementById("ship-cost").value) || 0,
+        targetPrice: parseFloat(document.getElementById("ship-target").value) || 0
+      });
+      document.getElementById("shipment-form").reset();
+      saveState("Logged inbound shipment");
+    }
+
+    function receiveShipment(id) {
+      const s = state.shipments.find(x => x.id === id);
+      if (!s) return;
+      state.inventory.unshift({
+        id: "inv_" + Date.now(),
+        name: s.name,
+        category: s.category,
+        condition: "Brand New",
+        sku: "ARR-" + Math.floor(100 + Math.random() * 900),
+        source: s.supplier || "Shipment",
+        dateAcquired: new Date().toISOString().split("T")[0],
+        initialQty: s.qty,
+        qtyLeft: s.qty,
+        unitCost: s.unitCost,
+        targetPrice: s.targetPrice,
+        serial: "",
+        hazmat: s.category.includes("Fragrances") ? "CLASS3" : "STANDARD",
+        platforms: ["eBay", "Snapchat"]
+      });
+      state.shipments = state.shipments.filter(x => x.id !== id);
+      saveState(`Received shipment: ${s.name}`);
+    }
+
+    function saveCustomerPreorder(e) {
+      e.preventDefault();
+      const cust = document.getElementById("po-cust").value.trim();
+      const qty = parseInt(document.getElementById("po-qty").value, 10) || 1;
+      const price = parseFloat(document.getElementById("po-price").value) || 0;
+      const dep = parseFloat(document.getElementById("po-deposit").value) || 0;
+
+      state.preorders.unshift({
+        id: "po_" + Date.now(),
+        customer: cust,
+        platform: document.getElementById("po-platform").value,
+        itemRef: document.getElementById("po-item-select").value,
+        qty: qty,
+        agreedPrice: price,
+        depositPaid: dep,
+        balanceDue: Math.max(0, (price * qty) - dep),
+        status: dep > 0 ? "Deposit Paid" : "Reserved"
+      });
+      if (!state.customers[cust]) state.customers[cust] = { orders: 0, spend: 0, status: "🌟 VIP / Verified" };
+      document.getElementById("preorder-form").reset();
+      saveState(`Locked preorder for ${cust}`);
+    }
+
+    function fulfillPreorder(id) {
+      const p = state.preorders.find(x => x.id === id);
+      if (!p) return;
+      state.sales.unshift({
+        id: "sale_" + Date.now(),
+        name: p.itemRef,
+        customer: p.customer,
+        platform: p.platform,
+        dateSold: new Date().toISOString().split("T")[0],
+        qty: p.qty,
+        salePrice: p.agreedPrice * p.qty,
+        buyerShip: 0,
+        unitCost: 0,
+        fee: 0,
+        shipCost: 0
+      });
+      p.status = "Fulfilled";
+      p.balanceDue = 0;
+      saveState(`Fulfilled preorder for ${p.customer}`);
+    }
+
+    // ================= TOOLS, MILEAGE & CONSIGNMENT =================
+    function evaluateBuyerOffer() {
+      const id = document.getElementById("offer-item-select").value;
+      const item = state.inventory.find(x => x.id === id);
+      if (!item) return;
+      const offer = parseFloat(document.getElementById("offer-amount").value) || 0;
+      const feePct = parseFloat(document.getElementById("offer-platform").value) || 0;
+      const fee = offer * (feePct / 100);
+      const net = offer - fee - item.unitCost;
+      const roi = item.unitCost > 0 ? ((net / item.unitCost) * 100).toFixed(1) : 0;
+
+      document.getElementById("offer-eval-result").innerHTML = `
+        <div class="kpi-card" style="background:var(--bg-input);">
+          <div class="kpi-label">Net Profit on ${fmtMoney(offer)} Offer</div>
+          <div class="kpi-value ${net >= 0 ? 'text-green' : 'text-red'}">${fmtMoney(net)} (${roi}% ROI)</div>
+          <div class="kpi-sub">Buy Cost: <span class="stealth-mask">${fmtMoney(item.unitCost)}</span> | Fee: ${fmtMoney(fee)}</div>
+        </div>
+      `;
+    }
+
+    function generateSmartCopy() {
+      const id = document.getElementById("copy-item-select").value;
+      const item = state.inventory.find(x => x.id === id);
+      if (!item) return;
+      const haz = item.hazmat === "CLASS3" ? "\n⚠️ Ships USPS Ground Advantage Only (Class 3)." : "\n⚡ Fast Next-Day Shipping / Local Meetup Ready!";
+      document.getElementById("smart-copy-output").value = `🔥 ${item.name} (${item.condition || 'Brand New'})\n✅ 100% Authentic (${item.serial || 'Verified In-Hand'})\n💰 Price: ${fmtMoney(item.targetPrice)}${haz}\n\n#reseller #streetwear #authentic`;
+    }
+
+    function calcPostage() {
+      const oz = parseFloat(document.getElementById("ship-calc-oz").value) || 12;
+      const haz = document.getElementById("ship-calc-haz").value === "YES";
+      let ground = oz <= 8 ? 4.85 : oz <= 15.9 ? 6.15 : 8.40;
+      let priority = oz <= 16 ? 9.25 : 12.60;
+      document.getElementById("postage-calc-result").innerHTML = `
+        <div class="kpi-card" style="background:var(--bg-input);">
+          <div class="kpi-label">Estimated Label Cost</div>
+          <div class="kpi-value text-accent">${fmtMoney(ground)} <span style="font-size:12px;">Ground Adv.</span></div>
+          <div class="kpi-sub">${haz ? '<span class="text-red">🔥 CLASS 3: Surface Ground Mandatory!</span>' : `Priority Mail: ${fmtMoney(priority)}`}</div>
+        </div>
+      `;
+    }
+
+    function saveMileageTrip(e) {
+      e.preventDefault();
+      const desc = document.getElementById("mile-desc").value.trim();
+      const date = document.getElementById("mile-date").value;
+      const dist = parseFloat(document.getElementById("mile-dist").value) || 0;
+      const rate = parseFloat(document.getElementById("mile-rate").value) || 0.76;
+      const writeOff = +(dist * rate).toFixed(2);
+
+      state.mileage.unshift({ id: "mi_" + Date.now(), date, desc, dist, rate, writeOff });
+      state.expenses.unshift({ id: "exp_" + Date.now(), name: `[IRS Mileage] ${desc} (${dist} mi)`, category: "Gas / Travel", date, amount: writeOff });
+      document.getElementById("mile-desc").value = "";
+      document.getElementById("mile-dist").value = "";
+      saveState(`Logged ${dist} mi trip`);
+    }
+
+    function updateMeetupScript() {
+      const buyer = document.getElementById("meet-buyer").value || "@buyer";
+      const item = document.getElementById("meet-item").value || "Item";
+      const spot = document.getElementById("meet-spot").value;
+      const time = document.getElementById("meet-time").value;
+      document.getElementById("meetup-script-box").value = `Yo ${buyer}! Locking in our meetup for ${item}.\n📍 Spot: ${spot}\n⏰ Time: ${time}\nLMK when you're 10 mins out!`;
+    }
+
+    function logBuyerNoShow() {
+      const buyer = document.getElementById("meet-buyer").value.trim();
+      if (!buyer) { alert("Enter buyer handle first!"); return; }
+      state.customers[buyer] = { orders: (state.customers[buyer]?.orders || 0), spend: (state.customers[buyer]?.spend || 0), status: "🚫 Flaker / No-Show" };
+      saveState(`Flagged ${buyer} as No-Show`);
+    }
+
+    function saveConsignment(e) {
+      e.preventDefault();
+      const partner = document.getElementById("con-partner").value.trim();
+      const item = document.getElementById("con-item").value.trim();
+      const profit = parseFloat(document.getElementById("con-profit").value) || 0;
+      const split = parseFloat(document.getElementById("con-split").value) || 50;
+      const payout = +(profit * (split / 100)).toFixed(2);
+      state.consignments.unshift({ id: "con_" + Date.now(), partner, item, profit, payout, settled: false });
+      e.target.reset();
+      saveState(`Logged split for ${partner}`);
+    }
+
+    function saveAccountBalances() {
+      Object.keys(state.accounts).forEach(acc => {
+        const el = document.getElementById("acc_" + acc);
+        if (el) state.accounts[acc] = parseFloat(el.value) || 0;
+      });
+      saveState("Updated wallet balances");
+    }
+
+    function saveSubscription(e) {
+      e.preventDefault();
+      state.subscriptions.unshift({
+        id: "sub_" + Date.now(),
+        name: document.getElementById("sub-name").value.trim(),
+        cost: parseFloat(document.getElementById("sub-cost").value) || 0
+      });
+      e.target.reset();
+      saveState("Added monthly subscription");
+    }
+
+    function saveReturn(e) {
+      e.preventDefault();
+      const name = document.getElementById("ret-name").value.trim();
+      const restock = document.getElementById("ret-restock").value === "YES";
+      state.returns.unshift({
+        id: "ret_" + Date.now(),
+        date: new Date().toISOString().split("T")[0],
+        name,
+        customer: document.getElementById("ret-cust").value.trim(),
+        amount: parseFloat(document.getElementById("ret-amount").value) || 0,
+        restocked: restock
+      });
+      if (restock) {
+        const inv = state.inventory.find(x => x.name.toLowerCase() === name.toLowerCase());
+        if (inv) inv.qtyLeft += 1;
+      }
+      e.target.reset();
+      saveState(`Logged return for ${name}`);
+    }
+
+    function saveExpense(e) {
+      e.preventDefault();
+      state.expenses.unshift({
+        id: "exp_" + Date.now(),
+        name: document.getElementById("exp-name").value.trim(),
+        category: "Overhead",
+        date: document.getElementById("exp-date").value,
+        amount: parseFloat(document.getElementById("exp-amount").value) || 0
+      });
+      e.target.reset();
+      saveState("Logged overhead expense");
+    }
+
+    // ================= SCANNER, LABELS & BULK CSV =================
+    function openScannerModal() {
+      document.getElementById("scanner-modal").classList.add("open");
+      document.getElementById("scanner-input").value = "";
+      document.getElementById("scanner-input").focus();
+      runScannerLookup("");
+    }
+
+    function closeScannerModal() {
+      document.getElementById("scanner-modal").classList.remove("open");
+    }
+
+    function runScannerLookup(q) {
+      const term = q.trim().toLowerCase();
+      const matches = state.inventory.filter(i => !term || [i.sku, i.serial, i.name].join(" ").toLowerCase().includes(term));
+      document.getElementById("scanner-results").innerHTML = matches.slice(0, 6).map(i => `
+        <div style="padding:10px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; gap:8px;">
+          <div>
+            <strong>[${i.sku || 'SKU'}] ${i.name}</strong>
+            <div style="font-size:11px; color:var(--text-muted);">Stock: ${i.qtyLeft} | Ask: ${fmtMoney(i.targetPrice)}</div>
+          </div>
+          <button class="btn btn-sm btn-success" onclick="closeScannerModal(); switchTab('sales'); document.getElementById('sale-inv-select').value='${i.id}'; onSaleInventorySelect();">⚡ Sell</button>
+        </div>
+      `).join("") || `<div style="color:var(--text-muted);">No matching SKU found.</div>`;
+    }
+
+    function printSkuLabelSheet() {
+      const html = state.inventory.filter(i => i.qtyLeft > 0).map(i => `
+        <div style="border:2px solid #000; padding:10px; margin-bottom:10px; text-align:center;">
+          <div style="font-size:15px; font-weight:900;">*${(i.sku || i.id).toUpperCase()}*</div>
+          <div style="font-family:monospace; letter-spacing:3px; font-size:16px;">||| | |||| || | |||</div>
+          <div style="font-size:12px; font-weight:700;">${i.name} (${i.condition || 'NEW'})</div>
+          <div style="font-size:11px;">Qty: ${i.qtyLeft} | Ask: ${fmtMoney(i.targetPrice)}</div>
+        </div>
+      `).join("");
+      document.getElementById("slip-content").innerHTML = `<h3 style="text-align:center; margin-bottom:10px;">FLIPVAULT SKU LABELS</h3>` + (html || "<p>No stock to print.</p>");
+      document.getElementById("slip-modal").classList.add("open");
+    }
+
+    function generateSlip(saleId) {
+      const s = state.sales.find(x => x.id === saleId);
+      if (!s) return;
+      document.getElementById("slip-content").innerHTML = `
+        <div style="text-align:center; border-bottom:2px dashed #000; padding-bottom:8px; margin-bottom:12px;">
+          <h2 style="margin:0;">FLIPVAULT RECEIPT</h2>
+          <p style="font-size:11px;">Order #${s.id.toUpperCase()} • ${s.dateSold}</p>
+        </div>
+        <div style="font-size:12px; margin-bottom:12px;">
+          <strong>BUYER:</strong> ${s.customer || 'Valued Buyer'}<br/>
+          <strong>CHANNEL:</strong> ${s.platform}<br/>
+          ${s.serial ? `<strong>SERIAL / BATCH:</strong> ${s.serial}<br/>` : ''}
+        </div>
+        <div style="border-top:1px solid #000; border-bottom:1px solid #000; padding:8px 0; font-size:13px;">
+          <strong>${s.qty}x ${s.name}</strong> — ${fmtMoney(s.salePrice + s.buyerShip)}
+        </div>
+        <p style="text-align:center; font-size:11px; margin-top:14px;">100% Authentic Verified</p>
+      `;
+      document.getElementById("slip-modal").classList.add("open");
+    }
+
+    function closeSlip() {
+      document.getElementById("slip-modal").classList.remove("open");
+    }
+
+    function importBulkCSVText() {
+      const raw = document.getElementById("bulk-csv-input").value.trim();
+      if (!raw) return;
+      const today = new Date().toISOString().split("T")[0];
+      let count = 0;
+      raw.split("\n").forEach(line => {
+        const parts = line.split(",");
+        if (parts.length >= 5) {
+          const [name, cat, qty, cost, target] = parts.map(p => p.trim());
+          state.inventory.unshift({
+            id: "inv_" + Date.now() + "_" + count,
+            name,
+            category: cat || "Other",
+            condition: "New",
+            sku: "CSV-" + Math.floor(100 + Math.random() * 900),
+            source: "CSV Import",
+            dateAcquired: today,
+            initialQty: parseInt(qty, 10) || 1,
+            qtyLeft: parseInt(qty, 10) || 1,
+            unitCost: parseFloat(cost) || 0,
+            targetPrice: parseFloat(target) || 0,
+            serial: "",
+            hazmat: "STANDARD",
+            platforms: ["eBay", "Snapchat"]
+          });
+          count++;
+        }
+      });
+      document.getElementById("bulk-csv-input").value = "";
+      saveState(`Imported ${count} CSV batches`);
+    }
+
+    // ================= MASTER RENDER ENGINE (WITH MOBILE DATA-LABELS) =================
+    function renderAll() {
+      renderDelistBanner();
+      populateAllDropdowns();
+      renderDashboard();
+      renderInventory();
+      renderShipmentsAndPreorders();
+      renderSales();
+      renderBundleCart();
+      renderLotSplitter();
+      evaluateBuyerOffer();
+      generateSmartCopy();
+      renderMileage();
+      renderPartnersAndVendors();
+      renderAccounts();
+      renderCRMAndReturns();
+      renderTaxDashboard();
+      renderAuditLog();
+    }
+
+    function renderDelistBanner() {
+      const container = document.getElementById("delist-alert-container");
+      if (!state.delistAlerts || state.delistAlerts.length === 0) { container.innerHTML = ""; return; }
+      container.innerHTML = state.delistAlerts.map((a, idx) => `
+        <div class="delist-banner">
+          <div>
+            <strong>🚨 DELIST ALERT:</strong> "${a.itemName}" sold out on <strong>${a.soldOn}</strong>!
+            Remove from: <span class="badge badge-red">${a.delistFrom}</span>
+          </div>
+          <button class="btn btn-sm btn-danger" onclick="state.delistAlerts.splice(${idx},1); saveState('Cleared delist alert');">✅ Done</button>
+        </div>
+      `).join("");
+    }
+
+    function populateAllDropdowns() {
+      const inStock = state.inventory.filter(i => i.qtyLeft > 0);
+      const stockOpts = inStock.map(i => `<option value="${i.id}">${i.name} (${i.qtyLeft} left | Cost: ${fmtMoney(i.unitCost)})</option>`).join("");
+
+      document.getElementById("sale-inv-select").innerHTML = `<option value="">-- Custom / Unlisted Flip --</option>` + stockOpts;
+      document.getElementById("bundle-item-select").innerHTML = stockOpts || `<option value="">No stock available</option>`;
+      document.getElementById("trade-out-select").innerHTML = stockOpts || `<option value="">No stock available</option>`;
+      document.getElementById("offer-item-select").innerHTML = stockOpts || `<option value="">No stock available</option>`;
+      document.getElementById("copy-item-select").innerHTML = stockOpts || `<option value="">No stock available</option>`;
+
+      const poOpts = [
+        ...state.shipments.map(s => `<option value="[OTW] ${s.name}">🚚 OTW: ${s.name} (${s.qty} units)</option>`),
+        ...inStock.map(i => `<option value="${i.name}">📦 Stock: ${i.name} (${i.qtyLeft} left)</option>`)
+      ].join("");
+      document.getElementById("po-item-select").innerHTML = poOpts || `<option value="Custom Preorder">Custom Preorder</option>`;
+    }
+
+    function renderDashboard() {
+      let grossRev = 0, totalCogs = 0, totalFees = 0, totalShip = 0, unitsSold = 0;
+      state.sales.forEach(s => {
+        grossRev += (s.salePrice + s.buyerShip);
+        totalCogs += (s.unitCost * s.qty);
+        totalFees += s.fee;
+        totalShip += s.shipCost;
+        unitsSold += s.qty;
+      });
+
+      const overhead = state.expenses.reduce((a, b) => a + b.amount, 0);
+      const returnsLoss = state.returns.reduce((a, b) => a + b.amount, 0);
+      const partnerPayouts = (state.consignments || []).reduce((a, b) => a + b.payout, 0);
+      const flipProfit = grossRev - totalCogs - totalFees - totalShip;
+      const trueNet = flipProfit - overhead - returnsLoss - partnerPayouts;
+
+      let activeUnits = 0, activeCap = 0, activeUnrealized = 0;
+      state.inventory.forEach(i => {
+        activeUnits += i.qtyLeft;
+        activeCap += (i.qtyLeft * i.unitCost);
+        activeUnrealized += (i.qtyLeft * (i.targetPrice - i.unitCost));
+      });
+
+      let otwUnits = 0, otwProfit = 0;
+      state.shipments.forEach(s => {
+        otwUnits += s.qty;
+        otwProfit += (s.qty * (s.targetPrice - s.unitCost));
+      });
+
+      document.getElementById("dashboard-kpis").innerHTML = `
+        <div class="kpi-card">
+          <div class="kpi-label">True Net Profit</div>
+          <div class="kpi-value ${trueNet >= 0 ? 'text-green' : 'text-red'} stealth-mask">${fmtMoney(trueNet)}</div>
+          <div class="kpi-sub">After COGS, Fees & Overhead</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Gross Revenue</div>
+          <div class="kpi-value text-accent">${fmtMoney(grossRev)}</div>
+          <div class="kpi-sub">${unitsSold} Units Sold (${state.sales.length} Flips)</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Active Stock</div>
+          <div class="kpi-value text-yellow">${activeUnits} Units</div>
+          <div class="kpi-sub">Tied: <span class="stealth-mask">${fmtMoney(activeCap)}</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Pipeline Ceiling</div>
+          <div class="kpi-value text-purple stealth-mask">${fmtMoney(trueNet + activeUnrealized + otwProfit)}</div>
+          <div class="kpi-sub">${otwUnits} Units OTW</div>
+        </div>
+      `;
+
+      const goal = state.settings.monthlyGoal || 1500;
+      const pct = Math.min(100, Math.max(0, (trueNet / goal) * 100)).toFixed(1);
+      const remaining = Math.max(0, goal - trueNet);
+      document.getElementById("goal-pacer-body").innerHTML = `
+        <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px;">
+          <span>Net: <strong class="text-green stealth-mask">${fmtMoney(trueNet)}</strong> / ${fmtMoney(goal)}</span>
+          <strong>${pct}%</strong>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+        <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">
+          <strong>${fmtMoney(remaining)}</strong> to goal (${fmtMoney(remaining / 10)}/day pace).
+        </div>
+      `;
+
+      const posNet = Math.max(0, trueNet);
+      document.getElementById("reinvest-allocator-body").innerHTML = `
+        <div class="kpi-card" style="padding:10px; background:var(--bg-input);">
+          <div class="kpi-label">60% Restock Pool</div>
+          <div class="kpi-value text-accent stealth-mask" style="font-size:16px;">${fmtMoney(posNet * 0.60)}</div>
+        </div>
+        <div class="kpi-card" style="padding:10px; background:var(--bg-input);">
+          <div class="kpi-label">25% Pocket Cash</div>
+          <div class="kpi-value text-green stealth-mask" style="font-size:16px;">${fmtMoney(posNet * 0.25)}</div>
+        </div>
+      `;
+
+      const chartEl = document.getElementById("chart-container");
+      if (state.sales.length === 0) {
+        chartEl.innerHTML = `<div style="height:100%; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:12px;">Log sales to see profit curve</div>`;
+      } else {
+        const pts = state.sales.slice(0, 10).reverse();
+        const max = Math.max(...pts.map(p => p.salePrice), 100);
+        const w = chartEl.clientWidth || 320, h = 155;
+        const step = w / (pts.length - 1 || 1);
+        const poly = pts.map((p, idx) => `${idx * step},${h - ((p.salePrice / max) * (h - 35)) - 15}`).join(" ");
+        chartEl.innerHTML = `
+          <svg width="100%" height="100%" viewBox="0 0 ${w} ${h}" style="overflow:visible;">
+            <polyline fill="none" stroke="#3b82f6" stroke-width="3" points="${poly}" />
+            ${pts.map((p, idx) => {
+              const x = idx * step, y = h - ((p.salePrice / max) * (h - 35)) - 15;
+              return `<circle cx="${x}" cy="${y}" r="4.5" fill="#10b981" /><text x="${x}" y="${y - 8}" fill="#94a3b8" font-size="9.5" text-anchor="middle">${fmtMoney(p.salePrice)}</text>`;
+            }).join("")}
+          </svg>
+        `;
+      }
+
+      const aged = state.inventory.filter(i => i.qtyLeft > 0 && daysSince(i.dateAcquired) >= 14);
+      document.getElementById("markdown-ladder-body").innerHTML = aged.map(i => {
+        const d = daysSince(i.dateAcquired);
+        let recPrice = i.targetPrice * 0.90;
+        if (d >= 60) recPrice = i.unitCost / (1 - 0.1325);
+        else if (d >= 45) recPrice = i.targetPrice * 0.80;
+        return `
+          <tr>
+            <td data-label="Item"><strong>${i.name}</strong></td>
+            <td data-label="Held"><span class="badge ${d >= 30 ? 'badge-red' : 'badge-yellow'}">${d}d</span></td>
+            <td data-label="Current">${fmtMoney(i.targetPrice)}</td>
+            <td data-label="Suggested Cut" class="text-yellow">${fmtMoney(recPrice)}</td>
+            <td data-label="Action"><button class="btn btn-sm btn-warning" onclick="applyMarkdownCut('${i.id}', ${recPrice})">✂️ Cut Price</button></td>
+          </tr>
+        `;
+      }).join("") || `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">All stock is fresh (less than 14 days)!</td></tr>`;
+
+      const catStats = {};
+      state.inventory.forEach(i => {
+        if (!catStats[i.category]) catStats[i.category] = { sold: 0, stock: 0, net: 0 };
+        catStats[i.category].stock += i.qtyLeft;
+      });
+      state.sales.forEach(s => {
+        const cat = s.category || "Apparel / Streetwear";
+        if (!catStats[cat]) catStats[cat] = { sold: 0, stock: 0, net: 0 };
+        catStats[cat].sold += s.qty;
+        catStats[cat].net += (s.salePrice + s.buyerShip) - (s.unitCost * s.qty) - s.fee - s.shipCost;
+      });
+      document.getElementById("velocity-ranker-body").innerHTML = Object.entries(catStats).map(([c, d]) => `
+        <tr>
+          <td data-label="Category"><strong>${c}</strong></td>
+          <td data-label="Sold">${d.sold}</td>
+          <td data-label="In Stock">${d.stock}</td>
+          <td data-label="Net Profit" class="text-green stealth-mask"><strong>${fmtMoney(d.net)}</strong></td>
+          <td data-label="Signal">${d.sold > 0 && d.stock <= 2 ? '<span class="badge badge-red">🔥 RESTOCK</span>' : '<span class="badge badge-green">Healthy</span>'}</td>
+        </tr>
+      `).join("");
+    }
+
+    function renderInventory() {
+      const q = document.getElementById("inv-search").value.toLowerCase();
+      const cat = document.getElementById("inv-filter-cat").value;
+
+      document.getElementById("inventory-body").innerHTML = state.inventory
+        .filter(i => (!q || [i.name, i.sku, i.serial, i.source].join(" ").toLowerCase().includes(q)) && (cat === "ALL" || i.category.includes(cat)))
+        .map(i => {
+          const minFloor = i.unitCost * 1.30;
+          const breakEven = (i.unitCost + 0.40) / (1 - 0.1325);
+          const hazBadge = i.hazmat === "CLASS3" ? `<span class="badge badge-red">🔥 Class 3</span>` : "";
+          const thumb = i.photo ? `<img src="${i.photo}" class="thumb-img" />` : "";
+          return `
+            <tr>
+              <td data-label="Item">
+                <div>
+                  ${thumb}<strong>${i.name}</strong> ${hazBadge}
+                  <div style="font-size:10.5px; color:var(--text-muted);">
+                    ${i.sku || '-'} • ${i.condition || 'New'} ${i.serial ? `• 🔐 ${i.serial}` : ''}
+                  </div>
+                </div>
+              </td>
+              <td data-label="Listed On">${(i.platforms || []).map(p => `<span class="badge badge-blue" style="margin:1px;">${p}</span>`).join("")}</td>
+              <td data-label="Stock Left">
+                <div class="qty-stepper">
+                  <button class="step-btn" onclick="adjustStock('${i.id}', -1)">-</button>
+                  <span class="badge ${i.qtyLeft === 0 ? 'badge-red' : 'badge-green'}">${i.qtyLeft}/${i.initialQty}</span>
+                  <button class="step-btn" onclick="adjustStock('${i.id}', 1)">+</button>
+                </div>
+              </td>
+              <td data-label="Unit Cost" class="stealth-mask">${fmtMoney(i.unitCost)}</td>
+              <td data-label="Target Ask"><strong>${fmtMoney(i.targetPrice)}</strong></td>
+              <td data-label="Min Floor" class="text-yellow">${fmtMoney(minFloor)}</td>
+              <td data-label="Break-Even">${fmtMoney(breakEven)}</td>
+              <td data-label="Actions">
+                <div style="display:flex; gap:5px; justify-content:flex-end;">
+                  ${i.qtyLeft > 0 ? `<button class="btn btn-sm btn-success" onclick="switchTab('sales'); document.getElementById('sale-inv-select').value='${i.id}'; onSaleInventorySelect();">⚡ Sell</button>` : ''}
+                  <button class="btn btn-sm" onclick="editInventoryItem('${i.id}')">✏️</button>
+                  <button class="btn btn-sm btn-danger" onclick="state.inventory=state.inventory.filter(x=>x.id!=='${i.id}'); saveState('Deleted stock item');">✕</button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join("") || `<tr><td colspan="8" style="text-align:center; color:var(--text-muted);">No matching stock items.</td></tr>`;
+    }
+
+    function renderShipmentsAndPreorders() {
+      document.getElementById("shipments-body").innerHTML = state.shipments.map(s => `
+        <tr>
+          <td data-label="Batch"><strong>${s.name}</strong></td>
+          <td data-label="Tracking / ETA">${s.tracking || 'TBD'} (${s.eta || 'TBD'})</td>
+          <td data-label="Units"><strong>${s.qty}</strong></td>
+          <td data-label="Unit Cost" class="stealth-mask">${fmtMoney(s.unitCost)}</td>
+          <td data-label="Total Tied" class="stealth-mask">${fmtMoney(s.qty * s.unitCost)}</td>
+          <td data-label="Est. Profit" class="text-green stealth-mask">+${fmtMoney(s.qty * (s.targetPrice - s.unitCost))}</td>
+          <td data-label="Action"><button class="btn btn-sm btn-success" onclick="receiveShipment('${s.id}')">📦 Receive</button></td>
+        </tr>
+      `).join("") || `<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">No active shipments</td></tr>`;
+
+      document.getElementById("preorders-body").innerHTML = state.preorders.map(p => `
+        <tr>
+          <td data-label="Buyer"><strong>${p.customer}</strong> (${p.platform})</td>
+          <td data-label="Item">${p.itemRef}</td>
+          <td data-label="Qty">${p.qty}</td>
+          <td data-label="Total">${fmtMoney(p.agreedPrice * p.qty)}</td>
+          <td data-label="Deposit" class="text-green">${fmtMoney(p.depositPaid)}</td>
+          <td data-label="Balance Due" class="text-yellow"><strong>${fmtMoney(p.balanceDue)}</strong></td>
+          <td data-label="Status"><span class="badge ${p.status === 'Fulfilled' ? 'badge-green' : 'badge-purple'}">${p.status}</span></td>
+          <td data-label="Action">${p.status !== 'Fulfilled' ? `<button class="btn btn-sm btn-success" onclick="fulfillPreorder('${p.id}')">✅ Complete</button>` : '-'}</td>
+        </tr>
+      `).join("") || `<tr><td colspan="8" style="text-align:center; color:var(--text-muted);">No buyer preorders</td></tr>`;
+    }
+
+    function renderSales() {
+      document.getElementById("sales-body").innerHTML = state.sales.map(s => {
+        const gross = s.salePrice + s.buyerShip;
+        const cogs = s.unitCost * s.qty;
+        const net = gross - cogs - s.fee - s.shipCost;
+        const roi = cogs > 0 ? ((net / cogs) * 100).toFixed(0) : 100;
+        return `
+          <tr>
+            <td data-label="Date">${s.dateSold}</td>
+            <td data-label="Item"><strong>${s.name}</strong></td>
+            <td data-label="Buyer">${s.customer || '-'}</td>
+            <td data-label="Channel"><span class="badge badge-blue">${s.platform}</span></td>
+            <td data-label="Qty">${s.qty}</td>
+            <td data-label="Gross">${fmtMoney(gross)}</td>
+            <td data-label="COGS" class="stealth-mask">${fmtMoney(cogs)}</td>
+            <td data-label="Fees/Ship">${fmtMoney(s.fee + s.shipCost)}</td>
+            <td data-label="Net Profit" class="${net >= 0 ? 'text-green' : 'text-red'} stealth-mask"><strong>${fmtMoney(net)}</strong></td>
+            <td data-label="ROI" class="stealth-mask">${roi}%</td>
+            <td data-label="Actions">
+              <div style="display:flex; gap:5px; justify-content:flex-end;">
+                <button class="btn btn-sm" onclick="generateSlip('${s.id}')">🖨️ Slip</button>
+                <button class="btn btn-sm btn-danger" onclick="state.sales=state.sales.filter(x=>x.id!=='${s.id}'); saveState('Deleted sale');">✕</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("") || `<tr><td colspan="11" style="text-align:center; color:var(--text-muted);">No sales recorded yet</td></tr>`;
+    }
+
+    function renderMileage() {
+      document.getElementById("mileage-body").innerHTML = (state.mileage || []).map(m => `
+        <tr>
+          <td data-label="Date">${m.date}</td>
+          <td data-label="Purpose"><strong>${m.desc}</strong></td>
+          <td data-label="Miles">${m.dist} mi</td>
+          <td data-label="Write-Off" class="text-green"><strong>${fmtMoney(m.writeOff)}</strong></td>
+        </tr>
+      `).join("") || `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">No mileage logged</td></tr>`;
+    }
+
+    function renderPartnersAndVendors() {
+      document.getElementById("consignment-body").innerHTML = (state.consignments || []).map((c, idx) => `
+        <tr>
+          <td data-label="Partner"><strong>${c.partner}</strong></td>
+          <td data-label="Item">${c.item}</td>
+          <td data-label="Net" class="stealth-mask">${fmtMoney(c.profit)}</td>
+          <td data-label="Payout" class="text-yellow"><strong>${fmtMoney(c.payout)}</strong></td>
+          <td data-label="Status"><span class="badge ${c.settled ? 'badge-green' : 'badge-yellow'}">${c.settled ? 'Paid' : 'Unpaid'}</span></td>
+          <td data-label="Action">${!c.settled ? `<button class="btn btn-sm btn-success" onclick="state.consignments[${idx}].settled=true; saveState('Settled payout');">Pay</button>` : '-'}</td>
+        </tr>
+      `).join("") || `<tr><td colspan="6" style="text-align:center; color:var(--text-muted);">No splits logged</td></tr>`;
+
+      const vMap = {};
+      state.inventory.forEach(i => {
+        const src = i.source || "Direct";
+        if (!vMap[src]) vMap[src] = { batches: 0, units: 0, spent: 0, estProfit: 0 };
+        vMap[src].batches += 1;
+        vMap[src].units += i.initialQty;
+        vMap[src].spent += (i.initialQty * i.unitCost);
+        vMap[src].estProfit += (i.initialQty * (i.targetPrice - i.unitCost));
+      });
+      document.getElementById("vendor-scorecard-body").innerHTML = Object.entries(vMap).map(([v, d]) => `
+        <tr>
+          <td data-label="Supplier" class="stealth-mask"><strong>${v}</strong></td>
+          <td data-label="Batches">${d.batches}</td>
+          <td data-label="Units">${d.units}</td>
+          <td data-label="Spent" class="stealth-mask">${fmtMoney(d.spent)}</td>
+          <td data-label="Est. Profit" class="text-green stealth-mask">+${fmtMoney(d.estProfit)}</td>
+          <td data-label="ROI" class="stealth-mask">${d.spent > 0 ? ((d.estProfit / d.spent) * 100).toFixed(0) : 0}%</td>
+        </tr>
+      `).join("") || `<tr><td colspan="6" style="text-align:center; color:var(--text-muted);">No vendor data</td></tr>`;
+    }
+
+    function renderAccounts() {
+      const totalLiquid = Object.values(state.accounts).reduce((a, b) => a + b, 0);
+      document.getElementById("accounts-kpis").innerHTML = `
+        <div class="kpi-card">
+          <div class="kpi-label">Total Liquid Cash & App Wallets</div>
+          <div class="kpi-value text-green stealth-mask">${fmtMoney(totalLiquid)}</div>
+          <div class="kpi-sub">Combined Cash + Apps</div>
+        </div>
+      `;
+      document.getElementById("accounts-form-grid").innerHTML = Object.entries(state.accounts).map(([acc, val]) => `
+        <div class="form-group">
+          <label>${acc} ($)</label>
+          <input type="number" step="0.01" id="acc_${acc}" value="${val}" />
+        </div>
+      `).join("");
+    }
+
+    function renderCRMAndReturns() {
+      document.getElementById("crm-body").innerHTML = Object.entries(state.customers).map(([handle, c]) => `
+        <tr>
+          <td data-label="Buyer"><strong>${handle}</strong></td>
+          <td data-label="Orders">${c.orders}</td>
+          <td data-label="Spend">${fmtMoney(c.spend)}</td>
+          <td data-label="Standing"><span class="badge ${c.status.includes('Flaker') ? 'badge-red' : 'badge-green'}">${c.status}</span></td>
+          <td data-label="Action"><button class="btn btn-sm" onclick="state.customers['${handle}'].status = state.customers['${handle}'].status.includes('Flaker') ? '🌟 VIP / Verified' : '🚫 Flaker / No-Show'; saveState('Toggled buyer status');">Toggle</button></td>
+        </tr>
+      `).join("") || `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">No buyers logged</td></tr>`;
+
+      document.getElementById("returns-body").innerHTML = state.returns.map(r => `
+        <tr>
+          <td data-label="Date">${r.date}</td>
+          <td data-label="Item"><strong>${r.name}</strong></td>
+          <td data-label="Loss" class="text-red">-${fmtMoney(r.amount)}</td>
+          <td data-label="Restocked">${r.restocked ? '✅ Yes' : '❌ No'}</td>
+        </tr>
+      `).join("") || `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">Zero returns!</td></tr>`;
+    }
+
+    function renderTaxDashboard() {
+      const thresh = parseFloat(document.getElementById("tax-threshold").value) || 20000;
+      const rate = parseFloat(document.getElementById("tax-rate").value) || 20;
+      document.getElementById("tax-rate-label").textContent = `${rate}%`;
+
+      let reportableVol = 0;
+      state.sales.filter(s => ["eBay", "Depop", "Mercari", "StockX"].includes(s.platform)).forEach(s => {
+        reportableVol += (s.salePrice + s.buyerShip);
+      });
+
+      const monthlyBurn = (state.subscriptions || []).reduce((a, b) => a + b.cost, 0);
+      const totalExp = state.expenses.reduce((a, b) => a + b.amount, 0);
+      const netProfit = state.sales.reduce((a, s) => a + (s.salePrice + s.buyerShip - (s.unitCost * s.qty) - s.fee - s.shipCost), 0) - totalExp;
+      const estTax = Math.max(0, netProfit * (rate / 100));
+
+      document.getElementById("tax-kpis").innerHTML = `
+        <div class="kpi-card">
+          <div class="kpi-label">1099-K Volume</div>
+          <div class="kpi-value ${reportableVol >= thresh ? 'text-red' : 'text-accent'}">${fmtMoney(reportableVol)}</div>
+          <div class="kpi-sub">${((reportableVol / thresh) * 100).toFixed(1)}% of ${fmtMoney(thresh)}</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Tax Write-Offs</div>
+          <div class="kpi-value text-green">${fmtMoney(totalExp)}</div>
+          <div class="kpi-sub">Supplies & Mileage</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Tax Reserve (${rate}%)</div>
+          <div class="kpi-value text-yellow stealth-mask">${fmtMoney(estTax)}</div>
+          <div class="kpi-sub">Set-Aside Estimate</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Monthly Burn</div>
+          <div class="kpi-value text-purple">${fmtMoney(monthlyBurn)}/mo</div>
+          <div class="kpi-sub">${fmtMoney(monthlyBurn / 30)}/day</div>
+        </div>
+      `;
+
+      document.getElementById("subscriptions-body").innerHTML = (state.subscriptions || []).map((sub, idx) => `
+        <tr>
+          <td data-label="Service"><strong>${sub.name}</strong></td>
+          <td data-label="Monthly">${fmtMoney(sub.cost)}/mo</td>
+          <td data-label="Daily Burn">${fmtMoney(sub.cost / 30)}/d</td>
+          <td data-label="Action"><button class="btn btn-sm btn-danger" onclick="state.subscriptions.splice(${idx},1); saveState('Removed subscription');">✕</button></td>
+        </tr>
+      `).join("") || `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">No subscriptions logged</td></tr>`;
+    }
+
+    function renderAuditLog() {
+      document.getElementById("audit-log-body").innerHTML = (state.auditLog || []).map(a => `
+        <tr>
+          <td data-label="Time">${a.time}</td>
+          <td data-label="Event"><strong>${a.action}</strong></td>
+        </tr>
+      `).join("") || `<tr><td colspan="2" style="text-align:center; color:var(--text-muted);">No actions logged yet</td></tr>`;
+    }
+
+    // ================= DEMO DATA, BACKUP & RESET =================
+    function loadDemoData() {
+      if (state.inventory.length > 0 && !confirm("Load full 25-module Titan sample dataset?")) return;
+      state = {
+        ...state,
+        inventory: [
+          { id: "inv_1", name: "Fear of God ESSENTIALS Hoodie - Stretch Limo", category: "Apparel / Streetwear", condition: "BNWT Size M", sku: "BIN-A1", source: "Streetwear Plug", dateAcquired: "2026-09-10", initialQty: 5, qtyLeft: 2, unitCost: 34, targetPrice: 85, serial: "SS22-AUTH", hazmat: "STANDARD", platforms: ["eBay", "Snapchat", "Depop"] },
+          { id: "inv_2", name: "Apple AirPods Pro (2nd Gen USB-C)", category: "Electronics / Audio", condition: "Sealed", sku: "TECH-01", source: "Wholesale Tech", dateAcquired: "2026-10-12", initialQty: 6, qtyLeft: 4, unitCost: 45, targetPrice: 115, serial: "SN-H4K992L", hazmat: "STANDARD", platforms: ["Snapchat", "Local Cash / Meetup"] },
+          { id: "inv_3", name: "Designer Eau de Parfum 100ml", category: "Fragrances / Cologne", condition: "New Box", sku: "FRAG-04", source: "Fragrance Catalog", dateAcquired: "2026-10-01", initialQty: 4, qtyLeft: 2, unitCost: 28, targetPrice: 80, serial: "BATCH-38X1", hazmat: "CLASS3", platforms: ["eBay", "Snapchat"] }
+        ],
+        shipments: [
+          { id: "sh_1", name: "Alo Yoga Accolade Hoodie Batch", category: "Apparel / Streetwear", supplier: "LA Apparel Vendor", tracking: "UPS 1Z999AA1019283", eta: "2026-10-24", qty: 5, unitCost: 36, targetPrice: 95 }
+        ],
+        preorders: [
+          { id: "po_1", customer: "@marcus_det", platform: "Snapchat", itemRef: "[OTW] Alo Yoga Accolade Hoodie Batch", qty: 1, agreedPrice: 95, depositPaid: 25, balanceDue: 70, status: "Deposit Paid" }
+        ],
+        sales: [
+          { id: "sl_1", invId: "inv_1", name: "Fear of God ESSENTIALS Hoodie - Stretch Limo", customer: "@jay_flips", platform: "eBay", dateSold: "2026-10-14", qty: 2, salePrice: 170, buyerShip: 8, unitCost: 34, fee: 23.98, shipCost: 6.45, serial: "SS22-AUTH" },
+          { id: "sl_2", invId: "inv_2", name: "Apple AirPods Pro (2nd Gen USB-C)", customer: "@derek_w", platform: "Snapchat", dateSold: "2026-10-19", qty: 2, salePrice: 230, buyerShip: 0, unitCost: 45, fee: 0, shipCost: 0, serial: "SN-H4K992L" }
+        ],
+        mileage: [
+          { id: "mi_1", date: "2026-10-19", desc: "Local Meetup + USPS Drop", dist: 14.2, rate: 0.76, writeOff: 10.79 }
+        ],
+        expenses: [
+          { id: "ex_1", name: "100x Poly Mailers + Labels", category: "Supplies", date: "2026-10-05", amount: 19.50 },
+          { id: "ex_2", name: "[IRS Mileage] Local Meetup + USPS Drop (14.2 mi)", category: "Gas / Travel", date: "2026-10-19", amount: 10.79 }
+        ],
+        consignments: [
+          { id: "cn_1", partner: "@brodie_sourcing", item: "Nike Tech Fleece Set", profit: 60, payout: 30, settled: false }
+        ],
+        subscriptions: [
+          { id: "sb_1", name: "eBay Basic Store Subscription", cost: 21.95 }
+        ],
+        accounts: { "Physical Cash": 230, "eBay Payouts": 147.57, "Cash App": 85, "Apple Cash": 40, "Venmo": 0, "PayPal": 0 },
+        customers: {
+          "@derek_w": { orders: 1, spend: 230, status: "🌟 VIP / Verified" },
+          "@jay_flips": { orders: 1, spend: 170, status: "🌟 VIP / Verified" }
+        },
+        delistAlerts: [
+          { id: "dl_1", itemName: "Nike Tech Fleece Grey Size M", soldOn: "Snapchat", delistFrom: "eBay, Depop, Mercari" }
+        ]
+      };
+      saveState("Loaded Demo Dataset");
+    }
+
+    function exportJSON() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `flipvault_titan_${new Date().toISOString().split("T")[0]}.json`;
+      a.click();
+    }
+
+    function importJSON(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        try {
+          const parsed = JSON.parse(evt.target.result);
+          state = { ...state, ...parsed };
+          saveState("Restored JSON backup");
+          alert("Backup restored!");
+        } catch (err) { alert("Invalid JSON file."); }
+      };
+      reader.readAsText(file);
+    }
+
+    function exportCSV() {
+      const rows = [["Type", "Date", "Item", "Platform/Source", "Qty", "Gross/Target", "UnitCost", "Fees/Ship", "Serial"]];
+      state.sales.forEach(s => rows.push(["SALE", s.dateSold, `"${s.name}"`, s.platform, s.qty, s.salePrice, s.unitCost, s.fee + s.shipCost, `"${s.serial || ''}"`]));
+      state.inventory.forEach(i => rows.push(["STOCK", i.dateAcquired, `"${i.name}"`, `"${i.source || ''}"`, i.qtyLeft, i.targetPrice, i.unitCost, 0, `"${i.sku || ''} ${i.serial || ''}"`]));
+      const blob = new Blob([rows.map(r => r.join(",")).join("\n")], { type: "text/csv" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `flipvault_export_${new Date().toISOString().split("T")[0]}.csv`;
+      a.click();
+    }
+
+    function resetAllData() {
+      if (!confirm("Wipe all records? Export a Backup JSON first if needed!")) return;
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+  </script>
+</body>
+</html>
