@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FLIPVAULT PRO // Ultimate Reseller Operating System</title>
+  <style>
+    :root {
+      --bg-base: #0a0e17;
+      --bg-card: #111827;
+      --bg-card-hover: #172033;
+      --bg-input: #0b1120;
+      --border: #1f293d;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --green: #10b981;
+      --green-bg: rgba(16, 185, 129, 0.12);
+      --red: #ef4444;
+      --red-bg: rgba(239, 68, 68, 0.12);
+      --yellow: #f59e0b;
+      --yellow-bg: rgba(245, 158, 11, 0.12);
+      --purple: #8b5cf6;
+      --purple-bg: rgba(139, 92, 246, 0.14);
+      --cyan: #06b6d4;
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif; }
+    body { background-color: var(--bg-base); color: var(--text-main); min-height: 100vh; padding-bottom: 60px; }
+
+    header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-logo {
+      width: 40px; height: 40px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 18px; color: #fff;
+    }
+    .brand h1 { font-size: 18px; font-weight: 800; letter-spacing: 0.5px; }
+    .brand span { font-size: 12px; color: var(--text-muted); display: block; }
+
+    .header-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+    .btn {
+      background: var(--bg-input); color: var(--text-main); border: 1px solid var(--border);
+      padding: 8px 14px; border-radius: 7px; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: all 0.15s ease; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn:hover { background: var(--bg-card-hover); border-color: var(--text-muted); }
+    .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-success { background: var(--green); border-color: var(--green); color: #022c16; font-weight: 700; }
+    .btn-purple { background: var(--purple); border-color: var(--purple); color: #fff; }
+    .btn-danger { background: var(--red-bg); border-color: rgba(239, 68, 68, 0.4); color: var(--red); }
+    .btn-danger:hover { background: var(--red); color: #fff; }
+    .btn-sm { padding: 5px 9px; font-size: 11px; }
+
+    .nav-tabs {
+      max-width: 1480px; margin: 18px auto 0; padding: 0 24px;
+      display: flex; gap: 6px; overflow-x: auto; border-bottom: 1px solid var(--border); padding-bottom: 10px;
+    }
+    .tab-btn {
+      background: transparent; color: var(--text-muted); border: 1px solid transparent;
+      padding: 9px 15px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--text-main); background: var(--bg-card); }
+    .tab-btn.active { background: var(--accent); color: #fff; }
+
+    main { max-width: 1480px; margin: 20px auto; padding: 0 24px; }
+    .tab-section { display: none; }
+    .tab-section.active { display: block; }
+
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin-bottom: 20px; }
+    .kpi-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+    .kpi-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-muted); margin-bottom: 6px; }
+    .kpi-value { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
+    .kpi-sub { font-size: 11px; color: var(--text-muted); }
+
+    .text-green { color: var(--green); }
+    .text-red { color: var(--red); }
+    .text-yellow { color: var(--yellow); }
+    .text-accent { color: var(--accent); }
+    .text-purple { color: var(--purple); }
+    .text-cyan { color: var(--cyan); }
+
+    .panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; }
+    .panel-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .panel-title { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 20px; }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    .form-group label { font-size: 11px; font-weight: 600; color: var(--text-muted); display: flex; justify-content: space-between; }
+    input, select, textarea {
+      background: var(--bg-input); border: 1px solid var(--border); color: var(--text-main);
+      padding: 8px 11px; border-radius: 7px; font-size: 13px; outline: none;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+    input[type="range"] { padding: 0; accent-color: var(--accent); }
+
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    th, td { padding: 10px 10px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    th { color: var(--text-muted); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.5px; background: rgba(11, 17, 32, 0.7); }
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 999px; font-size: 10.5px; font-weight: 700; }
+    .badge-green { background: var(--green-bg); color: var(--green); }
+    .badge-yellow { background: var(--yellow-bg); color: var(--yellow); }
+    .badge-red { background: var(--red-bg); color: var(--red); }
+    .badge-blue { background: rgba(59, 130, 246, 0.15); color: var(--accent); }
+    .badge-purple { background: var(--purple-bg); color: var(--purple); }
+
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .filter-bar input, .filter-bar select { min-width: 160px; }
+
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8);
+      display: none; align-items: center; justify-content: center; z-index: 100; padding: 16px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); width: 100%; max-width: 640px; padding: 22px; max-height: 90vh; overflow-y: auto; }
+
+    .printable-slip {
+      background: #ffffff; color: #000000; padding: 24px; border-radius: 4px;
+      font-family: 'Courier New', Courier, monospace; width: 100%; max-width: 480px; margin: 0 auto;
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      #print-area, #print-area * { visibility: visible; }
+      #print-area { position: absolute; left: 0; top: 0; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="brand-logo">FV</div>
+      <div>
+        <h1>FLIPVAULT PRO</h1>
+        <span>Ultimate Multi-Channel Reseller Command System</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-sm" onclick="loadDemoData()">✨ Sample Data</button>
+      <button class="btn btn-sm" onclick="exportCSV()">📄 Export CSV</button>
+      <button class="btn btn-sm" onclick="exportJSON()">💾 Backup JSON</button>
+      <label class="btn btn-sm" style="cursor:pointer;">
+        📂 Import JSON
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)" />
+      </label>
+      <button class="btn btn-sm" onclick="generateShareHash()">🔗 Sync Link</button>
+      <button class="btn btn-sm btn-danger" onclick="resetAllData()">🗑️ Reset</button>
+    </div>
+  </header>
+
+  <nav class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('dashboard', this)">📊 Dashboard & Visuals</button>
+    <button class="tab-btn" onclick="switchTab('inventory', this)">📦 Active Inventory</button>
+    <button class="tab-btn" onclick="switchTab('shipments', this)">🚚 Shipments & Preorders</button>
+    <button class="tab-btn" onclick="switchTab('preorders', this)">🤝 Buyer Reservation CRM</button>
+    <button class="tab-btn" onclick="switchTab('sales', this)">💰 Sales & Flip Log</button>
+    <button class="tab-btn" onclick="switchTab('crm', this)">👥 Customers & Directory</button>
+    <button class="tab-btn" onclick="switchTab('returns', this)">🔄 Returns & Damages</button>
+    <button class="tab-btn" onclick="switchTab('tax', this)">⚖️ 1099-K & Taxes</button>
+    <button class="tab-btn" onclick="switchTab('projections', this)">📈 Projections Simulator</button>
+    <button class="tab-btn" onclick="switchTab('expenses', this)">🧾 Overhead & Supplies</button>
+  </nav>
+
+  <main>
+    <!-- ================= 1. DASHBOARD & VISUALS ================= -->
+    <section id="tab-dashboard" class="tab-section active">
+      <div class="kpi-grid" id="dashboard-kpis"></div>
+
+      <!-- Pure SVG Analytics Visualizer -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">📈 30-Day Cash Flow & Realized Profit Curve</span>
+          <span style="font-size:12px; color:var(--text-muted);">Daily Gross Volume vs. Net Take-Home</span>
+        </div>
+        <div id="chart-container" style="width:100%; height:220px;"></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">🌐 Platform Profit Margins</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Channel</th>
+                  <th>Units</th>
+                  <th>Revenue</th>
+                  <th>Fees/Ship</th>
+                  <th>Net Profit</th>
+                  <th>Margin</th>
+                </tr>
+              </thead>
+              <tbody id="platform-breakdown-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">⏳ Deadstock & Aged Alerts (>30 Days)</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Days Held</th>
+                  <th>Cost Tied</th>
+                  <th>Target</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="aging-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 2. ACTIVE INVENTORY ================= -->
+    <section id="tab-inventory" class="tab-section">
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">➕ Add Stock / Inward Batch</span>
+        </div>
+        <form id="inventory-form" onsubmit="saveInventoryItem(event)">
+          <input type="hidden" id="inv-id" />
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Item Name / Title *</label>
+              <input type="text" id="inv-name" placeholder="Item Name" required />
+            </div>
+            <div class="form-group">
+              <label>Category</label>
+              <select id="inv-category">
+                <option value="Apparel / Streetwear">Apparel / Streetwear</option>
+                <option value="Electronics / Audio">Electronics / Audio</option>
+                <option value="Fragrances / Cologne">Fragrances / Cologne</option>
+                <option value="Footwear / Sneakers">Footwear / Sneakers</option>
+                <option value="Accessories / Gear">Accessories / Gear</option>
+                <option value="Consoles / Gaming">Consoles / Gaming</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Size / Condition</label>
+              <input type="text" id="inv-condition" placeholder="e.g. Size L / New" />
+            </div>
+            <div class="form-group">
+              <label>Bin / SKU Location</label>
+              <input type="text" id="inv-sku" placeholder="e.g. BIN-A2" />
+            </div>
+            <div class="form-group">
+              <label>Supplier / Vendor</label>
+              <input type="text" id="inv-source" placeholder="Vendor Name" />
+            </div>
+            <div class="form-group">
+              <label>Date In Stock *</label>
+              <input type="date" id="inv-date" required />
+            </div>
+            <div class="form-group">
+              <label>Quantity Acquired *</label>
+              <input type="number" id="inv-qty" min="1" step="1" value="1" required />
+            </div>
+            <div class="form-group">
+              <label>Cost Per Unit ($) *</label>
+              <input type="number" id="inv-cost" min="0" step="0.01" required />
+            </div>
+            <div class="form-group">
+              <label>Target Price ($/unit) *</label>
+              <input type="number" id="inv-target" min="0" step="0.01" required />
+            </div>
+            <div class="form-group">
+              <label>Notes / Serial #</label>
+              <input type="text" id="inv-notes" placeholder="Batch details" />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" id="inv-submit-btn">➕ Save Stock Batch</button>
+          <button type="button" class="btn" id="inv-cancel-btn" style="display:none;" onclick="resetInvForm()">Cancel</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">📦 Active Physical Stock</span>
+        </div>
+        <div class="filter-bar">
+          <input type="text" id="inv-search" placeholder="🔍 Search stock..." oninput="renderInventory()" />
+          <select id="inv-filter-cat" onchange="renderInventory()">
+            <option value="ALL">All Categories</option>
+            <option value="Apparel / Streetwear">Apparel / Streetwear</option>
+            <option value="Electronics / Audio">Electronics / Audio</option>
+            <option value="Fragrances / Cologne">Fragrances / Cologne</option>
+            <option value="Footwear / Sneakers">Footwear / Sneakers</option>
+            <option value="Accessories / Gear">Accessories / Gear</option>
+            <option value="Consoles / Gaming">Consoles / Gaming</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Item / SKU</th>
+                <th>Category</th>
+                <th>Units Remaining</th>
+                <th>Unit Cost</th>
+                <th>Capital Locked</th>
+                <th>Target Resale</th>
+                <th>Unrealized Gain</th>
+                <th>Days Held</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inventory-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 3. INCOMING SHIPMENTS ================= -->
+    <section id="tab-shipments" class="tab-section">
+      <div class="kpi-grid" id="shipment-kpis"></div>
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">🚚 Log Inbound Shipment</span>
+        </div>
+        <form id="shipment-form" onsubmit="saveShipment(event)">
+          <input type="hidden" id="ship-id" />
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Item / Batch Name *</label>
+              <input type="text" id="ship-name" placeholder="Item Name" required />
+            </div>
+            <div class="form-group">
+              <label>Category</label>
+              <select id="ship-category">
+                <option value="Apparel / Streetwear">Apparel / Streetwear</option>
+                <option value="Electronics / Audio">Electronics / Audio</option>
+                <option value="Fragrances / Cologne">Fragrances / Cologne</option>
+                <option value="Footwear / Sneakers">Footwear / Sneakers</option>
+                <option value="Accessories / Gear">Accessories / Gear</option>
+                <option value="Consoles / Gaming">Consoles / Gaming</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Tracking Number</label>
+              <input type="text" id="ship-tracking" placeholder="Carrier & Tracking #" />
+            </div>
+            <div class="form-group">
+              <label>Est. Arrival Date</label>
+              <input type="date" id="ship-eta" />
+            </div>
+            <div class="form-group">
+              <label>Quantity Ordered *</label>
+              <input type="number" id="ship-qty" min="1" step="1" value="1" required />
+            </div>
+            <div class="form-group">
+              <label>Unit Cost ($) *</label>
+              <input type="number" id="ship-cost" min="0" step="0.01" required />
+            </div>
+            <div class="form-group">
+              <label>Target Resale ($/unit) *</label>
+              <input type="number" id="ship-target" min="0" step="0.01" required />
+            </div>
+            <div class="form-group">
+              <label>Vendor / Supplier</label>
+              <input type="text" id="ship-supplier" placeholder="Vendor" />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-purple">🚚 Log Shipment</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">📦 In-Transit Queue</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Batch</th>
+                <th>Tracking / ETA</th>
+                <th>Units</th>
+                <th>Capital OTW</th>
+                <th>Target Total</th>
+                <th>Est. Profit</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="shipments-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 4. BUYER RESERVATION & PREORDER CRM ================= -->
+    <section id="tab-preorders" class="tab-section">
+      <div class="kpi-grid" id="preorder-kpis"></div>
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">🤝 Log Customer Preorder / Claimed Hold</span>
+          <span style="font-size:12px; color:var(--text-muted);">Locks incoming or in-stock items with customer deposits</span>
+        </div>
+        <form id="preorder-form" onsubmit="saveCustomerPreorder(event)">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Customer Name / Handle *</label>
+              <input type="text" id="po-cust" placeholder="e.g. @marcus_09" required />
+            </div>
+            <div class="form-group">
+              <label>Platform / Channel</label>
+              <select id="po-platform">
+                <option value="Snapchat">Snapchat</option>
+                <option value="Instagram DM">Instagram DM</option>
+                <option value="Local Cash / Meetup">Local Meetup / Text</option>
+                <option value="eBay Message">eBay Message</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Select Item / Incoming Batch *</label>
+              <select id="po-item-select" required></select>
+            </div>
+            <div class="form-group">
+              <label>Units Reserved *</label>
+              <input type="number" id="po-qty" min="1" step="1" value="1" required />
+            </div>
+            <div class="form-group">
+              <label>Agreed Price ($/unit) *</label>
+              <input type="number" id="po-price" min="0" step="0.01" required />
+            </div>
+            <div class="form-group">
+              <label>Deposit Collected ($)</label>
+              <input type="number" id="po-deposit" min="0" step="0.01" value="0.00" />
+            </div>
+            <div class="form-group">
+              <label>Target Delivery / Meetup Date</label>
+              <input type="date" id="po-date" />
+            </div>
+            <div class="form-group">
+              <label>Notes / Contact Info</label>
+              <input type="text" id="po-notes" placeholder="Phone or drop point" />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">🤝 Lock Reservation</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">📋 Active Customer Reservations</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>Item Reserved</th>
+                <th>Qty</th>
+                <th>Total Agreed</th>
+                <th>Deposit Paid</th>
+                <th>Remaining Due</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="preorders-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 5. SALES & FLIP LOG ================= -->
+    <section id="tab-sales" class="tab-section">
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">💰 Log Completed Flip</span>
+        </div>
+        <form id="sale-form" onsubmit="saveSale(event)">
+          <div class="inventory-picker-box">
+            <label style="font-size:12px; font-weight:700; color:var(--accent);">Select From Active Physical Stock (Deducts Stock):</label>
+            <select id="sale-inv-select" onchange="onSaleInventorySelect()"></select>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Item Name *</label>
+              <input type="text" id="sale-name" required />
+            </div>
+            <div class="form-group">
+              <label>Buyer Name / Handle</label>
+              <input type="text" id="sale-cust" placeholder="Customer Handle" />
+            </div>
+            <div class="form-group">
+              <label>Platform *</label>
+              <select id="sale-platform" onchange="autoCalcSaleFee()">
+                <option value="eBay">eBay (13.25% + $0.40)</option>
+                <option value="Snapchat">Snapchat (0% Fee)</option>
+                <option value="Local Cash / Meetup">Local Meetup (0% Fee)</option>
+                <option value="Depop">Depop (3.3% + $0.45)</option>
+                <option value="Mercari">Mercari (10%)</option>
+                <option value="StockX">StockX (12%)</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Date Sold *</label>
+              <input type="date" id="sale-date" required />
+            </div>
+            <div class="form-group">
+              <label>Quantity Sold *</label>
+              <input type="number" id="sale-qty" min="1" step="1" value="1" required />
+            </div>
+            <div class="form-group">
+              <label>Sale Price Gross ($) *</label>
+              <input type="number" id="sale-price" min="0" step="0.01" oninput="autoCalcSaleFee()" required />
+            </div>
+            <div class="form-group">
+              <label>Buyer Shipping Paid ($)</label>
+              <input type="number" id="sale-buyer-ship" min="0" step="0.01" value="0.00" oninput="autoCalcSaleFee()" />
+            </div>
+            <div class="form-group">
+              <label>Unit Buy Cost ($) *</label>
+              <input type="number" id="sale-unit-cost" min="0" step="0.01" required />
+            </div>
+            <div class="form-group">
+              <label>Platform Fees ($)</label>
+              <input type="number" id="sale-fee" min="0" step="0.01" value="0.00" />
+            </div>
+            <div class="form-group">
+              <label>Outbound Shipping Cost ($)</label>
+              <input type="number" id="sale-ship-cost" min="0" step="0.01" value="0.00" />
+            </div>
+            <div class="form-group">
+              <label>Notes / Tracking</label>
+              <input type="text" id="sale-notes" placeholder="Order ID or notes" />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-success">💸 Record Flip & Deduct Stock</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">📈 Completed Sales</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Item</th>
+                <th>Buyer</th>
+                <th>Channel</th>
+                <th>Qty</th>
+                <th>Gross</th>
+                <th>Total Cost</th>
+                <th>Fees/Ship</th>
+                <th>Net Profit</th>
+                <th>ROI</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="sales-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 6. CUSTOMER & VIP DIRECTORY ================= -->
+    <section id="tab-crm" class="tab-section">
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">👥 Customer Directory & Reputation Ledger</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Customer Handle</th>
+                <th>Total Flips</th>
+                <th>Lifetime Gross Spend</th>
+                <th>Preferred Platform</th>
+                <th>Status / Standing</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="crm-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 7. RETURNS, REFUNDS & DAMAGES ================= -->
+    <section id="tab-returns" class="tab-section">
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">🔄 Record Return, Chargeback or Damaged Item</span>
+        </div>
+        <form id="return-form" onsubmit="saveReturn(event)">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Item Name *</label>
+              <input type="text" id="ret-name" required />
+            </div>
+            <div class="form-group">
+              <label>Customer Name / Handle</label>
+              <input type="text" id="ret-cust" />
+            </div>
+            <div class="form-group">
+              <label>Incident Type</label>
+              <select id="ret-type">
+                <option value="Customer Return">Customer Return</option>
+                <option value="Transit Damaged / Lost">Transit Damaged / Lost</option>
+                <option value="Fraud / Chargeback">Fraud / Chargeback</option>
+                <option value="Defective Stock">Defective Stock</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Refund Amount Issued ($)</label>
+              <input type="number" id="ret-amount" min="0" step="0.01" value="0.00" />
+            </div>
+            <div class="form-group">
+              <label>Restock Item to Inventory?</label>
+              <select id="ret-restock">
+                <option value="NO">No (Dead Loss / Destroyed)</option>
+                <option value="YES">Yes (Add +1 Back to Stock)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Incident Date *</label>
+              <input type="date" id="ret-date" required />
+            </div>
+            <div class="form-group">
+              <label>Notes / Resolution</label>
+              <input type="text" id="ret-notes" placeholder="Reason for issue" />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-danger">⚠️ Log Incident</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">⚠️ Incident & Loss Log</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Item</th>
+                <th>Customer</th>
+                <th>Type</th>
+                <th>Refund Issued</th>
+                <th>Restocked?</th>
+                <th>Notes</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="returns-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 8. 1099-K & TAX DASHBOARD ================= -->
+    <section id="tab-tax" class="tab-section">
+      <div class="kpi-grid" id="tax-kpis"></div>
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">⚖️ 1099-K Reporting & Income Tax Set-Aside</span>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Reporting Threshold Setting</label>
+            <select id="tax-threshold" onchange="renderTaxDashboard()">
+              <option value="600">$600 (Strict Reporting Threshold)</option>
+              <option value="5000" selected>$5,000 (Transition Rule)</option>
+              <option value="20000">$20,000 (Standard IRS 200+ Transactions)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Estimated Tax Rate Set-Aside: <strong id="tax-rate-label">20%</strong></label>
+            <input type="range" id="tax-rate" min="10" max="35" step="1" value="20" oninput="renderTaxDashboard()" />
+          </div>
+        </div>
+        <div id="tax-details" style="margin-top:16px;"></div>
+      </div>
+    </section>
+
+    <!-- ================= 9. PROFIT PROJECTIONS ================= -->
+    <section id="tab-projections" class="tab-section">
+      <div class="kpi-grid" id="projection-kpis"></div>
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">🎛️ Dynamic Pricing & Fee Scenario Simulator</span>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Sell-Through Rate: <strong id="proj-str-val">100%</strong></label>
+            <input type="range" id="proj-str" min="20" max="100" step="5" value="100" oninput="renderProjections()" />
+          </div>
+          <div class="form-group">
+            <label>Price Discount / Offer: <strong id="proj-disc-val">0%</strong></label>
+            <input type="range" id="proj-disc" min="0" max="30" step="2" value="0" oninput="renderProjections()" />
+          </div>
+          <div class="form-group">
+            <label>Platform Fee Mix</label>
+            <select id="proj-fee" onchange="renderProjections()">
+              <option value="0">100% Direct Cash / Meetups (0% Fee)</option>
+              <option value="6.6" selected>50/50 Direct & eBay Mix (~6.6%)</option>
+              <option value="13.25">100% eBay (~13.25%)</option>
+            </select>
+          </div>
+        </div>
+        <div id="proj-scenario-cards" class="kpi-grid" style="margin-top:16px; margin-bottom:0;"></div>
+      </div>
+    </section>
+
+    <!-- ================= 10. OVERHEAD EXPENSES ================= -->
+    <section id="tab-expenses" class="tab-section">
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">🧾 Log Overhead / Supplies / Gas</span>
+        </div>
+        <form id="expense-form" onsubmit="saveExpense(event)">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Description *</label>
+              <input type="text" id="exp-name" placeholder="Tape, Mailers, Gas" required />
+            </div>
+            <div class="form-group">
+              <label>Category</label>
+              <select id="exp-category">
+                <option value="Shipping Supplies">Shipping Supplies</option>
+                <option value="Gas / Travel">Gas / Travel</option>
+                <option value="Vendor Access">Vendor Access</option>
+                <option value="Hardware / Scales">Hardware / Scales</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Date *</label>
+              <input type="date" id="exp-date" required />
+            </div>
+            <div class="form-group">
+              <label>Amount ($) *</label>
+              <input type="number" id="exp-amount" min="0" step="0.01" required />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">➕ Save Overhead Expense</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">🗂️ Expense History</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="expenses-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- PRINTABLE PACKING SLIP MODAL -->
+  <div class="modal-backdrop" id="slip-modal">
+    <div class="modal">
+      <div class="panel-header">
+        <span class="panel-title">📄 Thermal Packing Slip</span>
+        <button class="btn btn-sm" onclick="closeSlip()">✕</button>
+      </div>
+      <div id="print-area">
+        <div class="printable-slip" id="slip-content"></div>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:16px;">
+        <button class="btn btn-sm" onclick="window.print()">🖨️ Print Slip</button>
+        <button class="btn btn-sm" onclick="closeSlip()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "FLIPVAULT_DATA_V1";
+
+    let state = {
+      inventory: [],
+      shipments: [],
+      sales: [],
+      expenses: [],
+      preorders: [],
+      returns: [],
+      customers: {}
+    };
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const today = new Date().toISOString().split("T")[0];
+      ["inv-date", "ship-date", "sale-date", "exp-date", "ret-date"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = today;
+      });
+
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          state = {
+            inventory: parsed.inventory || [],
+            shipments: parsed.shipments || [],
+            sales: parsed.sales || [],
+            expenses: parsed.expenses || [],
+            preorders: parsed.preorders || [],
+            returns: parsed.returns || [],
+            customers: parsed.customers || {}
+          };
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      renderAll();
+    });
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      renderAll();
+    }
+
+    function fmtMoney(n) {
+      const val = Number(n) || 0;
+      return (val < 0 ? "-" : "") + "$" + Math.abs(val).toFixed(2);
+    }
+
+    function daysSince(dateStr) {
+      if (!dateStr) return 0;
+      return Math.max(0, Math.floor((new Date() - new Date(dateStr)) / (1000 * 60 * 60 * 24)));
+    }
+
+    function switchTab(tabId, btnEl) {
+      document.querySelectorAll(".tab-section").forEach(s => s.classList.remove("active"));
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      document.getElementById("tab-" + tabId).classList.add("active");
+      if (btnEl) btnEl.classList.add("active");
+    }
+
+    // Platform Fee Formulas
+    function calculatePlatformFee(platform, gross) {
+      const g = Number(gross) || 0;
+      if (g <= 0) return 0;
+      switch (platform) {
+        case "eBay": return +(g * 0.1325 + 0.40).toFixed(2);
+        case "Depop": return +(g * 0.033 + 0.45).toFixed(2);
+        case "Mercari": return +(g * 0.10).toFixed(2);
+        case "StockX": return +(g * 0.12).toFixed(2);
+        default: return 0;
+      }
+    }
+
+    function autoCalcSaleFee() {
+      const plat = document.getElementById("sale-platform").value;
+      const price = Number(document.getElementById("sale-price").value) || 0;
+      const ship = Number(document.getElementById("sale-buyer-ship").value) || 0;
+      document.getElementById("sale-fee").value = calculatePlatformFee(plat, price + ship);
+    }
+
+    // ================= INVENTORY =================
+    function saveInventoryItem(e) {
+      e.preventDefault();
+      const id = document.getElementById("inv-id").value;
+      const qty = parseInt(document.getElementById("inv-qty").value, 10) || 1;
+
+      const itemData = {
+        id: id || ("inv_" + Date.now()),
+        name: document.getElementById("inv-name").value.trim(),
+        category: document.getElementById("inv-category").value,
+        condition: document.getElementById("inv-condition").value.trim(),
+        sku: document.getElementById("inv-sku").value.trim(),
+        source: document.getElementById("inv-source").value.trim(),
+        dateAcquired: document.getElementById("inv-date").value,
+        initialQty: qty,
+        qtyLeft: qty,
+        unitCost: parseFloat(document.getElementById("inv-cost").value) || 0,
+        targetPrice: parseFloat(document.getElementById("inv-target").value) || 0,
+        notes: document.getElementById("inv-notes").value.trim()
+      };
+
+      if (id) {
+        const idx = state.inventory.findIndex(x => x.id === id);
+        if (idx > -1) {
+          const sold = state.inventory[idx].initialQty - state.inventory[idx].qtyLeft;
+          itemData.qtyLeft = Math.max(0, qty - sold);
+          state.inventory[idx] = itemData;
+        }
+      } else {
+        state.inventory.unshift(itemData);
+      }
+      resetInvForm();
+      saveState();
+    }
+
+    function resetInvForm() {
+      document.getElementById("inventory-form").reset();
+      document.getElementById("inv-id").value = "";
+      document.getElementById("inv-submit-btn").textContent = "➕ Save Stock Batch";
+      document.getElementById("inv-cancel-btn").style.display = "none";
+    }
+
+    function editInventoryItem(id) {
+      const i = state.inventory.find(x => x.id === id);
+      if (!i) return;
+      document.getElementById("inv-id").value = i.id;
+      document.getElementById("inv-name").value = i.name;
+      document.getElementById("inv-category").value = i.category;
+      document.getElementById("inv-condition").value = i.condition || "";
+      document.getElementById("inv-sku").value = i.sku || "";
+      document.getElementById("inv-source").value = i.source || "";
+      document.getElementById("inv-date").value = i.dateAcquired;
+      document.getElementById("inv-qty").value = i.initialQty;
+      document.getElementById("inv-cost").value = i.unitCost;
+      document.getElementById("inv-target").value = i.targetPrice;
+      document.getElementById("inv-notes").value = i.notes || "";
+      document.getElementById("inv-submit-btn").textContent = "💾 Update Item";
+      document.getElementById("inv-cancel-btn").style.display = "inline-flex";
+    }
+
+    function deleteInventoryItem(id) {
+      if (!confirm("Delete inventory batch?")) return;
+      state.inventory = state.inventory.filter(x => x.id !== id);
+      saveState();
+    }
+
+    // ================= SHIPMENTS =================
+    function saveShipment(e) {
+      e.preventDefault();
+      state.shipments.unshift({
+        id: "ship_" + Date.now(),
+        name: document.getElementById("ship-name").value.trim(),
+        category: document.getElementById("ship-category").value,
+        tracking: document.getElementById("ship-tracking").value.trim(),
+        eta: document.getElementById("ship-eta").value,
+        qty: parseInt(document.getElementById("ship-qty").value, 10) || 1,
+        unitCost: parseFloat(document.getElementById("ship-cost").value) || 0,
+        targetPrice: parseFloat(document.getElementById("ship-target").value) || 0,
+        supplier: document.getElementById("ship-supplier").value.trim()
+      });
+      document.getElementById("shipment-form").reset();
+      saveState();
+    }
+
+    function receiveShipment(id) {
+      const s = state.shipments.find(x => x.id === id);
+      if (!s) return;
+      state.inventory.unshift({
+        id: "inv_" + Date.now(),
+        name: s.name,
+        category: s.category,
+        condition: "Brand New",
+        sku: "ARRIVED",
+        source: s.supplier,
+        dateAcquired: new Date().toISOString().split("T")[0],
+        initialQty: s.qty,
+        qtyLeft: s.qty,
+        unitCost: s.unitCost,
+        targetPrice: s.targetPrice,
+        notes: "Received from shipment"
+      });
+      state.shipments = state.shipments.filter(x => x.id !== id);
+      saveState();
+    }
+
+    // ================= PREORDERS & RESERVATIONS =================
+    function saveCustomerPreorder(e) {
+      e.preventDefault();
+      const cust = document.getElementById("po-cust").value.trim();
+      const deposit = parseFloat(document.getElementById("po-deposit").value) || 0;
+      const price = parseFloat(document.getElementById("po-price").value) || 0;
+      const qty = parseInt(document.getElementById("po-qty").value, 10) || 1;
+
+      state.preorders.unshift({
+        id: "po_" + Date.now(),
+        customer: cust,
+        platform: document.getElementById("po-platform").value,
+        itemRef: document.getElementById("po-item-select").value,
+        qty: qty,
+        agreedPrice: price,
+        depositPaid: deposit,
+        balanceDue: Math.max(0, (price * qty) - deposit),
+        status: deposit > 0 ? "Deposit Paid" : "Reserved (Unpaid)",
+        date: document.getElementById("po-date").value,
+        notes: document.getElementById("po-notes").value.trim()
+      });
+
+      if (!state.customers[cust]) {
+        state.customers[cust] = { orders: 0, spend: 0, status: "Verified / Flawless" };
+      }
+
+      document.getElementById("preorder-form").reset();
+      saveState();
+    }
+
+    function fulfillPreorder(id) {
+      const p = state.preorders.find(x => x.id === id);
+      if (!p) return;
+
+      state.sales.unshift({
+        id: "sale_" + Date.now(),
+        name: p.itemRef.split("|")[1] || p.itemRef,
+        customer: p.customer,
+        platform: p.platform,
+        dateSold: new Date().toISOString().split("T")[0],
+        qty: p.qty,
+        salePrice: p.agreedPrice * p.qty,
+        buyerShip: 0,
+        unitCost: 0,
+        fee: 0,
+        shipCost: 0,
+        notes: `Fulfillment of Preorder #${p.id}`
+      });
+
+      p.status = "Fulfilled / Delivered";
+      p.balanceDue = 0;
+      saveState();
+    }
+
+    // ================= SALES =================
+    function saveSale(e) {
+      e.preventDefault();
+      const selectedInv = document.getElementById("sale-inv-select").value;
+      const qtySold = parseInt(document.getElementById("sale-qty").value, 10) || 1;
+      const cust = document.getElementById("sale-cust").value.trim();
+
+      if (selectedInv) {
+        const item = state.inventory.find(x => x.id === selectedInv);
+        if (item) {
+          if (qtySold > item.qtyLeft) {
+            alert(`Only ${item.qtyLeft} remaining in stock!`);
+            return;
+          }
+          item.qtyLeft -= qtySold;
+        }
+      }
+
+      const gross = parseFloat(document.getElementById("sale-price").value) || 0;
+      state.sales.unshift({
+        id: "sale_" + Date.now(),
+        invId: selectedInv,
+        name: document.getElementById("sale-name").value.trim(),
+        customer: cust,
+        platform: document.getElementById("sale-platform").value,
+        dateSold: document.getElementById("sale-date").value,
+        qty: qtySold,
+        salePrice: gross,
+        buyerShip: parseFloat(document.getElementById("sale-buyer-ship").value) || 0,
+        unitCost: parseFloat(document.getElementById("sale-unit-cost").value) || 0,
+        fee: parseFloat(document.getElementById("sale-fee").value) || 0,
+        shipCost: parseFloat(document.getElementById("sale-ship-cost").value) || 0,
+        notes: document.getElementById("sale-notes").value.trim()
+      });
+
+      if (cust) {
+        if (!state.customers[cust]) state.customers[cust] = { orders: 0, spend: 0, status: "Verified / Flawless" };
+        state.customers[cust].orders += 1;
+        state.customers[cust].spend += gross;
+      }
+
+      document.getElementById("sale-form").reset();
+      saveState();
+    }
+
+    function onSaleInventorySelect() {
+      const id = document.getElementById("sale-inv-select").value;
+      if (!id) return;
+      const item = state.inventory.find(x => x.id === id);
+      if (!item) return;
+      document.getElementById("sale-name").value = item.name;
+      document.getElementById("sale-unit-cost").value = item.unitCost;
+      document.getElementById("sale-price").value = item.targetPrice;
+      autoCalcSaleFee();
+    }
+
+    // ================= RETURNS & DAMAGES =================
+    function saveReturn(e) {
+      e.preventDefault();
+      const restock = document.getElementById("ret-restock").value === "YES";
+      const name = document.getElementById("ret-name").value.trim();
+
+      state.returns.unshift({
+        id: "ret_" + Date.now(),
+        name: name,
+        customer: document.getElementById("ret-cust").value.trim(),
+        type: document.getElementById("ret-type").value,
+        amount: parseFloat(document.getElementById("ret-amount").value) || 0,
+        restocked: restock,
+        date: document.getElementById("ret-date").value,
+        notes: document.getElementById("ret-notes").value.trim()
+      });
+
+      if (restock) {
+        const existing = state.inventory.find(x => x.name.toLowerCase() === name.toLowerCase());
+        if (existing) existing.qtyLeft += 1;
+      }
+
+      document.getElementById("return-form").reset();
+      saveState();
+    }
+
+    // ================= EXPENSES =================
+    function saveExpense(e) {
+      e.preventDefault();
+      state.expenses.unshift({
+        id: "exp_" + Date.now(),
+        name: document.getElementById("exp-name").value.trim(),
+        category: document.getElementById("exp-category").value,
+        date: document.getElementById("exp-date").value,
+        amount: parseFloat(document.getElementById("exp-amount").value) || 0
+      });
+      document.getElementById("expense-form").reset();
+      saveState();
+    }
+
+    // ================= PACKING SLIP GENERATOR =================
+    function generateSlip(saleId) {
+      const s = state.sales.find(x => x.id === saleId);
+      if (!s) return;
+      const html = `
+        <div style="text-align:center; border-bottom:1px dashed #000; padding-bottom:8px; margin-bottom:12px;">
+          <h2 style="margin:0; font-size:18px;">FLIPVAULT ORDER DISPATCH</h2>
+          <p style="margin:2px 0; font-size:11px;">Order ID: #${s.id.toUpperCase()}</p>
+          <p style="margin:2px 0; font-size:11px;">Date: ${s.dateSold}</p>
+        </div>
+        <div style="margin-bottom:12px; font-size:12px;">
+          <strong>CUSTOMER:</strong> ${s.customer || 'Valued Buyer'}<br/>
+          <strong>CHANNEL:</strong> ${s.platform}<br/>
+          <strong>STATUS:</strong> PAID / VERIFIED
+        </div>
+        <table style="width:100%; border-collapse:collapse; margin-bottom:12px; font-size:12px;">
+          <thead>
+            <tr style="border-bottom:1px solid #000;">
+              <th style="text-align:left; color:#000;">ITEM</th>
+              <th style="text-align:center; color:#000;">QTY</th>
+              <th style="text-align:right; color:#000;">TOTAL</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color:#000; padding:6px 0;">${s.name}</td>
+              <td style="text-align:center; color:#000;">${s.qty}</td>
+              <td style="text-align:right; color:#000;">${fmtMoney(s.salePrice)}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="text-align:right; font-size:12px; border-top:1px dashed #000; padding-top:6px;">
+          <strong>TOTAL PAID: ${fmtMoney(s.salePrice + s.buyerShip)}</strong>
+        </div>
+        <div style="text-align:center; margin-top:20px; font-size:11px;">
+          <p>Thank you for your business!</p>
+        </div>
+      `;
+      document.getElementById("slip-content").innerHTML = html;
+      document.getElementById("slip-modal").classList.add("open");
+    }
+
+    function closeSlip() {
+      document.getElementById("slip-modal").classList.remove("open");
+    }
+
+    // ================= RENDER EVERYTHING =================
+    function renderAll() {
+      populateDropdowns();
+      renderDashboard();
+      renderInventory();
+      renderShipments();
+      renderPreorders();
+      renderSales();
+      renderCRM();
+      renderReturns();
+      renderTaxDashboard();
+      renderProjections();
+      renderExpenses();
+    }
+
+    function populateDropdowns() {
+      const saleSel = document.getElementById("sale-inv-select");
+      let saleHtml = `<option value="">-- Custom / Unlisted Item --</option>`;
+      state.inventory.filter(i => i.qtyLeft > 0).forEach(i => {
+        saleHtml += `<option value="${i.id}">${i.name} (${i.qtyLeft} in stock) - Cost: ${fmtMoney(i.unitCost)}</option>`;
+      });
+      saleSel.innerHTML = saleHtml;
+
+      const poSel = document.getElementById("po-item-select");
+      let poHtml = `<optgroup label="Physical Inventory">`;
+      state.inventory.forEach(i => {
+        poHtml += `<option value="INV|${i.name}">${i.name} (${i.qtyLeft} left in stock)</option>`;
+      });
+      poHtml += `</optgroup><optgroup label="Incoming Shipments">`;
+      state.shipments.forEach(s => {
+        poHtml += `<option value="SHIP|${s.name}">${s.name} (${s.qty} ordered - ETA: ${s.eta || 'TBD'})</option>`;
+      });
+      poHtml += `</optgroup>`;
+      poSel.innerHTML = poHtml;
+    }
+
+    function renderDashboard() {
+      let grossRev = 0, totalCogs = 0, totalFees = 0, totalShip = 0, unitsSold = 0;
+      state.sales.forEach(s => {
+        grossRev += (s.salePrice + s.buyerShip);
+        totalCogs += (s.unitCost * s.qty);
+        totalFees += s.fee;
+        totalShip += s.shipCost;
+        unitsSold += s.qty;
+      });
+
+      const totalOverhead = state.expenses.reduce((a, b) => a + b.amount, 0);
+      const returnLosses = state.returns.reduce((a, b) => a + b.amount, 0);
+      const trueNet = grossRev - totalCogs - totalFees - totalShip - totalOverhead - returnLosses;
+
+      let activeCapital = 0, activeUnits = 0;
+      state.inventory.forEach(i => {
+        activeCapital += (i.qtyLeft * i.unitCost);
+        activeUnits += i.qtyLeft;
+      });
+
+      document.getElementById("dashboard-kpis").innerHTML = `
+        <div class="kpi-card">
+          <div class="kpi-label">True Net Profit</div>
+          <div class="kpi-value ${trueNet >= 0 ? 'text-green' : 'text-red'}">${fmtMoney(trueNet)}</div>
+          <div class="kpi-sub">Minus Expenses & Returns</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Gross Processed Volume</div>
+          <div class="kpi-value text-accent">${fmtMoney(grossRev)}</div>
+          <div class="kpi-sub">${unitsSold} Units Flipped</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Active Capital in Stock</div>
+          <div class="kpi-value text-yellow">${fmtMoney(activeCapital)}</div>
+          <div class="kpi-sub">${activeUnits} Units on Hand</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Total Platform Fees</div>
+          <div class="kpi-value text-purple">${fmtMoney(totalFees)}</div>
+          <div class="kpi-sub">Shipping Out: ${fmtMoney(totalShip)}</div>
+        </div>
+      `;
+
+      // Pure SVG Chart Generator
+      renderVisualChart();
+
+      // Platform Breakdown
+      const pMap = {};
+      state.sales.forEach(s => {
+        if (!pMap[s.platform]) pMap[s.platform] = { units: 0, rev: 0, fees: 0, net: 0 };
+        const rev = s.salePrice + s.buyerShip;
+        const net = rev - (s.unitCost * s.qty) - s.fee - s.shipCost;
+        pMap[s.platform].units += s.qty;
+        pMap[s.platform].rev += rev;
+        pMap[s.platform].fees += (s.fee + s.shipCost);
+        pMap[s.platform].net += net;
+      });
+
+      document.getElementById("platform-breakdown-body").innerHTML = Object.entries(pMap).map(([plat, d]) => `
+        <tr>
+          <td><strong>${plat}</strong></td>
+          <td>${d.units}</td>
+          <td>${fmtMoney(d.rev)}</td>
+          <td>${fmtMoney(d.fees)}</td>
+          <td class="${d.net >= 0 ? 'text-green' : 'text-red'}"><strong>${fmtMoney(d.net)}</strong></td>
+          <td>${d.rev > 0 ? ((d.net / d.rev) * 100).toFixed(1) : 0}%</td>
+        </tr>
+      `).join("") || `<tr><td colspan="6" style="text-align:center; color:var(--text-muted);">No sales data</td></tr>`;
+
+      // Deadstock Table
+      document.getElementById("aging-body").innerHTML = state.inventory
+        .filter(i => i.qtyLeft > 0 && daysSince(i.dateAcquired) >= 30)
+        .map(i => `
+          <tr>
+            <td><strong>${i.name}</strong></td>
+            <td><span class="badge badge-red">${daysSince(i.dateAcquired)} days</span></td>
+            <td>${fmtMoney(i.qtyLeft * i.unitCost)}</td>
+            <td>${fmtMoney(i.targetPrice)}</td>
+            <td><button class="btn btn-sm btn-success" onclick="switchTab('sales', document.querySelectorAll('.tab-btn')[4])">Sell</button></td>
+          </tr>
+        `).join("") || `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">No deadstock detected!</td></tr>`;
+    }
+
+    function renderVisualChart() {
+      const container = document.getElementById("chart-container");
+      if (state.sales.length === 0) {
+        container.innerHTML = `<div style="height:100%; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:12px;">Log sales to generate visual profit curve</div>`;
+        return;
+      }
+
+      // Group sales by last 7 records
+      const points = state.sales.slice(0, 10).reverse();
+      const maxVal = Math.max(...points.map(p => p.salePrice), 100);
+      const width = container.clientWidth || 800;
+      const height = 180;
+
+      let polyPoints = "";
+      const step = width / (points.length - 1 || 1);
+
+      points.forEach((p, idx) => {
+        const x = idx * step;
+        const y = height - ((p.salePrice / maxVal) * (height - 30)) - 15;
+        polyPoints += `${x},${y} `;
+      });
+
+      container.innerHTML = `
+        <svg width="100%" height="100%" viewBox="0 0 ${width} ${height}" style="overflow:visible;">
+          <polyline fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" points="${polyPoints.trim()}" />
+          ${points.map((p, idx) => {
+            const x = idx * step;
+            const y = height - ((p.salePrice / maxVal) * (height - 30)) - 15;
+            return `
+              <circle cx="${x}" cy="${y}" r="5" fill="#10b981" />
+              <text x="${x}" y="${y - 10}" fill="#9ca3af" font-size="10" text-anchor="middle">${fmtMoney(p.salePrice)}</text>
+            `;
+          }).join("")}
+        </svg>
+      `;
+    }
+
+    function renderInventory() {
+      const q = document.getElementById("inv-search").value.toLowerCase();
+      const cat = document.getElementById("inv-filter-cat").value;
+
+      document.getElementById("inventory-body").innerHTML = state.inventory
+        .filter(i => (!q || i.name.toLowerCase().includes(q)) && (cat === "ALL" || i.category === cat))
+        .map(i => `
+          <tr>
+            <td><strong>${i.name}</strong><br/><span style="font-size:11px; color:var(--text-muted);">${i.sku || 'No SKU'} • ${i.condition || 'New'}</span></td>
+            <td>${i.category}</td>
+            <td><span class="badge ${i.qtyLeft === 0 ? 'badge-red' : 'badge-green'}">${i.qtyLeft} / ${i.initialQty}</span></td>
+            <td>${fmtMoney(i.unitCost)}</td>
+            <td><strong>${fmtMoney(i.qtyLeft * i.unitCost)}</strong></td>
+            <td>${fmtMoney(i.targetPrice)}</td>
+            <td class="text-green">+${fmtMoney(i.qtyLeft * (i.targetPrice - i.unitCost))}</td>
+            <td>${daysSince(i.dateAcquired)}d</td>
+            <td>
+              <button class="btn btn-sm" onclick="editInventoryItem('${i.id}')">✏️</button>
+              <button class="btn btn-sm btn-danger" onclick="deleteInventoryItem('${i.id}')">✕</button>
+            </td>
+          </tr>
+        `).join("") || `<tr><td colspan="9" style="text-align:center; color:var(--text-muted);">No stock found</td></tr>`;
+    }
+
+    function renderShipments() {
+      document.getElementById("shipments-body").innerHTML = state.shipments.map(s => `
+        <tr>
+          <td><strong>${s.name}</strong><br/><span style="font-size:11px; color:var(--text-muted);">${s.supplier}</span></td>
+          <td>${s.tracking || 'TBD'}<br/><span style="font-size:11px; color:var(--text-muted);">ETA: ${s.eta || 'TBD'}</span></td>
+          <td><strong>${s.qty}</strong></td>
+          <td>${fmtMoney(s.qty * s.unitCost)}</td>
+          <td>${fmtMoney(s.qty * s.targetPrice)}</td>
+          <td class="text-green">+${fmtMoney(s.qty * (s.targetPrice - s.unitCost))}</td>
+          <td><button class="btn btn-sm btn-success" onclick="receiveShipment('${s.id}')">📦 Mark Received</button></td>
+        </tr>
+      `).join("") || `<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">No active shipments</td></tr>`;
+    }
+
+    function renderPreorders() {
+      document.getElementById("preorders-body").innerHTML = state.preorders.map(p => `
+        <tr>
+          <td><strong>${p.customer}</strong><br/><span style="font-size:11px; color:var(--text-muted);">${p.platform}</span></td>
+          <td>${p.itemRef}</td>
+          <td>${p.qty}</td>
+          <td>${fmtMoney(p.agreedPrice * p.qty)}</td>
+          <td class="text-green">${fmtMoney(p.depositPaid)}</td>
+          <td class="${p.balanceDue > 0 ? 'text-yellow' : 'text-green'}"><strong>${fmtMoney(p.balanceDue)}</strong></td>
+          <td><span class="badge ${p.status.includes('Fulfilled') ? 'badge-green' : 'badge-yellow'}">${p.status}</span></td>
+          <td>
+            ${p.status !== 'Fulfilled / Delivered' ? `<button class="btn btn-sm btn-success" onclick="fulfillPreorder('${p.id}')">✅ Complete Flip</button>` : ''}
+          </td>
+        </tr>
+      `).join("") || `<tr><td colspan="8" style="text-align:center; color:var(--text-muted);">No preorders</td></tr>`;
+    }
+
+    function renderSales() {
+      document.getElementById("sales-body").innerHTML = state.sales.map(s => {
+        const net = (s.salePrice + s.buyerShip) - (s.unitCost * s.qty) - s.fee - s.shipCost;
+        return `
+          <tr>
+            <td>${s.dateSold}</td>
+            <td><strong>${s.name}</strong></td>
+            <td>${s.customer || '-'}</td>
+            <td><span class="badge badge-blue">${s.platform}</span></td>
+            <td>${s.qty}</td>
+            <td>${fmtMoney(s.salePrice + s.buyerShip)}</td>
+            <td>${fmtMoney(s.unitCost * s.qty)}</td>
+            <td>${fmtMoney(s.fee + s.shipCost)}</td>
+            <td class="${net >= 0 ? 'text-green' : 'text-red'}"><strong>${fmtMoney(net)}</strong></td>
+            <td>${s.unitCost > 0 ? ((net / (s.unitCost * s.qty)) * 100).toFixed(0) : 100}%</td>
+            <td><button class="btn btn-sm" onclick="generateSlip('${s.id}')">📄 Slip</button></td>
+          </tr>
+        `;
+      }).join("") || `<tr><td colspan="11" style="text-align:center; color:var(--text-muted);">No sales recorded</td></tr>`;
+    }
+
+    function renderCRM() {
+      document.getElementById("crm-body").innerHTML = Object.entries(state.customers).map(([handle, c]) => `
+        <tr>
+          <td><strong>${handle}</strong></td>
+          <td>${c.orders} Orders</td>
+          <td><strong>${fmtMoney(c.spend)}</strong></td>
+          <td>Snapchat / Local</td>
+          <td><span class="badge badge-green">${c.status}</span></td>
+          <td><button class="btn btn-sm btn-danger" onclick="toggleBlacklist('${handle}')">Flag</button></td>
+        </tr>
+      `).join("") || `<tr><td colspan="6" style="text-align:center; color:var(--text-muted);">No customers logged</td></tr>`;
+    }
+
+    function toggleBlacklist(handle) {
+      if (!state.customers[handle]) return;
+      state.customers[handle].status = state.customers[handle].status.includes("Flawless") ? "⚠️ Flaker / Time Waster" : "Verified / Flawless";
+      saveState();
+    }
+
+    function renderReturns() {
+      document.getElementById("returns-body").innerHTML = state.returns.map(r => `
+        <tr>
+          <td>${r.date}</td>
+          <td><strong>${r.name}</strong></td>
+          <td>${r.customer || '-'}</td>
+          <td><span class="badge badge-red">${r.type}</span></td>
+          <td class="text-red">-${fmtMoney(r.amount)}</td>
+          <td>${r.restocked ? '✅ Restocked' : '❌ Scrapped'}</td>
+          <td>${r.notes || '-'}</td>
+          <td><button class="btn btn-sm btn-danger" onclick="state.returns = state.returns.filter(x => x.id !== '${r.id}'); saveState();">✕</button></td>
+        </tr>
+      `).join("") || `<tr><td colspan="8" style="text-align:center; color:var(--text-muted);">No incidents logged</td></tr>`;
+    }
+
+    function renderTaxDashboard() {
+      const threshold = parseFloat(document.getElementById("tax-threshold").value) || 5000;
+      const rate = parseFloat(document.getElementById("tax-rate").value) || 20;
+      document.getElementById("tax-rate-label").textContent = `${rate}%`;
+
+      let reportableGross = 0;
+      state.sales.filter(s => ["eBay", "Depop", "Mercari", "StockX"].includes(s.platform)).forEach(s => {
+        reportableGross += (s.salePrice + s.buyerShip);
+      });
+
+      const totalProfit = state.sales.reduce((acc, s) => acc + (s.salePrice - (s.unitCost * s.qty) - s.fee - s.shipCost), 0) - state.expenses.reduce((a, b) => a + b.amount, 0);
+      const taxDue = Math.max(0, totalProfit * (rate / 100));
+
+      document.getElementById("tax-kpis").innerHTML = `
+        <div class="kpi-card">
+          <div class="kpi-label">Reportable Processed Volume</div>
+          <div class="kpi-value ${reportableGross >= threshold ? 'text-red' : 'text-accent'}">${fmtMoney(reportableGross)}</div>
+          <div class="kpi-sub">Threshold: ${fmtMoney(threshold)} (${((reportableGross / threshold) * 100).toFixed(1)}%)</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Estimated Tax Set-Aside (${rate}%)</div>
+          <div class="kpi-value text-yellow">${fmtMoney(taxDue)}</div>
+          <div class="kpi-sub">Recommended to set aside in savings</div>
+        </div>
+      `;
+    }
+
+    function renderProjections() {
+      const str = parseFloat(document.getElementById("proj-str").value) || 100;
+      const disc = parseFloat(document.getElementById("proj-disc").value) || 0;
+      const fee = parseFloat(document.getElementById("proj-fee").value) || 0;
+
+      document.getElementById("proj-str-val").textContent = `${str}%`;
+      document.getElementById("proj-disc-val").textContent = `-${disc}%`;
+
+      let totalCost = 0, targetRev = 0;
+      state.inventory.forEach(i => {
+        totalCost += (i.qtyLeft * i.unitCost);
+        targetRev += (i.qtyLeft * i.targetPrice);
+      });
+
+      const discountedRev = targetRev * (1 - disc / 100) * (str / 100);
+      const estFees = discountedRev * (fee / 100);
+      const projectedNet = discountedRev - estFees - totalCost;
+
+      document.getElementById("proj-scenario-cards").innerHTML = `
+        <div class="kpi-card">
+          <div class="kpi-label">Projected Cash Received</div>
+          <div class="kpi-value text-accent">${fmtMoney(discountedRev - estFees)}</div>
+          <div class="kpi-sub">Gross Rev: ${fmtMoney(discountedRev)}</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Projected Net Profit</div>
+          <div class="kpi-value ${projectedNet >= 0 ? 'text-green' : 'text-red'}">${fmtMoney(projectedNet)}</div>
+          <div class="kpi-sub">Cost Invested: ${fmtMoney(totalCost)}</div>
+        </div>
+      `;
+    }
+
+    function renderExpenses() {
+      document.getElementById("expenses-body").innerHTML = state.expenses.map(e => `
+        <tr>
+          <td>${e.date}</td>
+          <td><strong>${e.name}</strong></td>
+          <td>${e.category}</td>
+          <td class="text-red">-${fmtMoney(e.amount)}</td>
+          <td><button class="btn btn-sm btn-danger" onclick="state.expenses = state.expenses.filter(x => x.id !== '${e.id}'); saveState();">✕</button></td>
+        </tr>
+      `).join("") || `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">No overhead logged</td></tr>`;
+    }
+
+    // ================= DATA SYNC & BACKUPS =================
+    function generateShareHash() {
+      const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+      const link = `${window.location.origin}${window.location.pathname}#sync=${b64.slice(0, 40)}...`;
+      prompt("Copy portable transfer code (or export JSON):", b64);
+    }
+
+    function exportJSON() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `flipvault_backup_${new Date().toISOString().split("T")[0]}.json`;
+      a.click();
+    }
+
+    function importJSON(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        try {
+          state = JSON.parse(evt.target.result);
+          saveState();
+          alert("Backup restored!");
+        } catch (err) {
+          alert("Invalid backup file");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function exportCSV() {
+      const rows = [["Type", "Name", "Date", "Qty", "Gross", "Cost", "Fees", "Notes"]];
+      state.sales.forEach(s => rows.push(["SALE", `"${s.name}"`, s.dateSold, s.qty, s.salePrice, s.unitCost * s.qty, s.fee + s.shipCost, `"${s.notes || ''}"`]));
+      const blob = new Blob([rows.map(r => r.join(",")).join("\n")], { type: "text/csv" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "flipvault_data.csv";
+      a.click();
+    }
+
+    function loadDemoData() {
+      state = {
+        inventory: [
+          { id: "i1", name: "Essentials 1977 Knit Hoodie", category: "Apparel / Streetwear", condition: "BNWT L", sku: "BIN-1", source: "Wholesale", dateAcquired: "2026-09-15", initialQty: 4, qtyLeft: 2, unitCost: 35, targetPrice: 85, notes: "" },
+          { id: "i2", name: "AirPods Pro 2nd Gen USB-C", category: "Electronics / Audio", condition: "Sealed", sku: "TECH-2", source: "Bulk", dateAcquired: "2026-10-02", initialQty: 5, qtyLeft: 3, unitCost: 50, targetPrice: 120, notes: "" }
+        ],
+        shipments: [
+          { id: "s1", name: "Alo Accolade Sweatpants", category: "Apparel / Streetwear", tracking: "UPS 9201...", eta: "2026-10-25", qty: 4, unitCost: 30, targetPrice: 75, supplier: "Vendor" }
+        ],
+        sales: [
+          { id: "sl1", invId: "i1", name: "Essentials 1977 Knit Hoodie", customer: "@jake_m", platform: "Snapchat", dateSold: "2026-10-18", qty: 2, salePrice: 170, buyerShip: 0, unitCost: 35, fee: 0, shipCost: 0, notes: "Local cash drop" }
+        ],
+        expenses: [
+          { id: "e1", name: "50x Poly Mailers", category: "Shipping Supplies", date: "2026-10-10", amount: 14.50 }
+        ],
+        preorders: [
+          { id: "p1", customer: "@cole_resells", platform: "Snapchat", itemRef: "SHIP|Alo Accolade Sweatpants", qty: 1, agreedPrice: 75, depositPaid: 25, balanceDue: 50, status: "Deposit Paid", date: "2026-10-26", notes: "" }
+        ],
+        returns: [],
+        customers: {
+          "@jake_m": { orders: 1, spend: 170, status: "Verified / Flawless" }
+        }
+      };
+      saveState();
+    }
+
+    function resetAllData() {
+      if (!confirm("Wipe all tracking records?")) return;
+      state = { inventory: [], shipments: [], sales: [], expenses: [], preorders: [], returns: [], customers: {} };
+      saveState();
+    }
+  </script>
+</body>
+</html>
